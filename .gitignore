@@ -1,0 +1,35 @@
+# Node
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Build output
+/dist/
+/**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Vite
+.vite/
+
+# Coverage
+coverage/
+
+# Misc
+*.local
+
+# package-lock.json
+package-lock.json*
