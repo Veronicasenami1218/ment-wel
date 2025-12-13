@@ -4,9 +4,9 @@ A beautiful, modern mental health platform built with React, TypeScript, and Tai
 
 ## 🌐 Live Demo
 
-- **Frontend:** [https://plp-ment-wel.netlify.app/](https://plp-ment-wel.netlify.app/)
-- **Backend API:** [https://plp-final-project-backend.onrender.com](https://plp-final-project-backend.onrender.com)
-- **API Documentation:** [https://plp-final-project-backend.onrender.com/api/v1/docs](https://plp-final-project-backend.onrender.com/api/v1/docs)
+- **Frontend:** 
+- **Backend API:** 
+- **API Documentation:** 
 
 ## ✨ Features
 
@@ -57,12 +57,12 @@ A beautiful, modern mental health platform built with React, TypeScript, and Tai
 2. Update the variables:
    ```env
    # API Configuration
-   VITE_API_URL=https://plp-final-project-backend.onrender.com/api
-   VITE_BACKEND_URL=https://plp-final-project-backend.onrender.com
+   VITE_API_URL=
+   VITE_BACKEND_URL=
    
    # App Configuration
    VITE_APP_NAME=MentWel
-   VITE_APP_URL=https://plp-ment-wel.netlify.app
+   VITE_APP_URL=
    
    # Feature Flags
    VITE_ENABLE_ANALYTICS=true
@@ -85,7 +85,7 @@ A beautiful, modern mental health platform built with React, TypeScript, and Tai
 - **Axios** - HTTP client for API calls
 
 ### Backend Integration
-- **Backend URL:** [https://plp-final-project-backend.onrender.com](https://plp-final-project-backend.onrender.com)
+- **Backend URL:** 
 - **API Endpoints:** RESTful API for therapists, sessions, and user management
 
 ### Development Tools
@@ -160,8 +160,8 @@ npm run preview
 
 The application is deployed on **Netlify** with automatic deployments from the main branch.
 
-- **Live URL:** [https://plp-ment-wel.netlify.app/](https://plp-ment-wel.netlify.app/)
-- **Backend API:** [https://plp-final-project-backend.onrender.com](https://plp-final-project-backend.onrender.com)
+- **Live URL:** 
+- **Backend API:** 
 
 ### Deploy Your Own
 
