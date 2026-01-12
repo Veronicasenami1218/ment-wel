@@ -72,13 +72,15 @@ export default function RegisterPage() {
       // Transform the data to match backend API
       const backendData: RegisterData = {
         ...registerData,
-        acceptTerms: terms
+        acceptTerms: terms,
+        role: 'user' // Add default role
       };
 
       await registerUser(backendData);
       toast.success('Account created successfully! Welcome to MentWel!');
       navigate(from, { replace: true });
     } catch (error: any) {
+      console.error('Registration error:', error);
       toast.error(error.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);

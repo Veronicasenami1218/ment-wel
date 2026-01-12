@@ -16,39 +16,35 @@ export interface RegisterData {
   country: string;
   phoneNumber?: string;
   acceptTerms: boolean;
+  role?: string;
 }
 
 export interface User {
-  _id: string;
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
   role: string;
   phoneNumber?: string;
-  isPhoneVerified: boolean;
+  isPhoneVerified?: boolean;
   isEmailVerified: boolean;
-  status: string;
-  dateOfBirth: string;
-  gender: string;
-  country: string;
-  acceptedTermsAt: string;
-  createdAt: string;
-  updatedAt: string;
+  status?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  country?: string;
+  acceptedTermsAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AuthTokens {
-  access: {
-    token: string;
-    expiresIn: string;
-  };
-  refresh: {
-    token: string;
-    expiresIn: string;
-  };
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface AuthResponse {
   success: boolean;
+  message: string;
   data: {
     user: User;
     tokens: AuthTokens;
@@ -64,13 +60,13 @@ class AuthService {
         const { user, tokens } = response.data.data;
         
         // Store tokens and user data
-        localStorage.setItem('accessToken', tokens.access.token);
-        localStorage.setItem('refreshToken', tokens.refresh.token);
+        localStorage.setItem('accessToken', tokens.accessToken);
+        localStorage.setItem('refreshToken', tokens.refreshToken);
         localStorage.setItem('user', JSON.stringify(user));
         
         return user;
       } else {
-        throw new Error('Login failed');
+        throw new Error(response.data.message || 'Login failed');
       }
     } catch (error: any) {
       const message = error.response?.data?.message || 'Login failed';
@@ -86,13 +82,13 @@ class AuthService {
         const { user, tokens } = response.data.data;
         
         // Store tokens and user data
-        localStorage.setItem('accessToken', tokens.access.token);
-        localStorage.setItem('refreshToken', tokens.refresh.token);
+        localStorage.setItem('accessToken', tokens.accessToken);
+        localStorage.setItem('refreshToken', tokens.refreshToken);
         localStorage.setItem('user', JSON.stringify(user));
         
         return user;
       } else {
-        throw new Error('Registration failed');
+        throw new Error(response.data.message || 'Registration failed');
       }
     } catch (error: any) {
       const message = error.response?.data?.message || 'Registration failed';
@@ -102,7 +98,7 @@ class AuthService {
 
   async logout(): Promise<void> {
     try {
-      // Optional: Call logout endpoint to invalidate tokens on server
+      // Call logout endpoint to invalidate tokens on server
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
         await apiClient.post('/v1/auth/logout', { refreshToken });
@@ -147,6 +143,32 @@ class AuthService {
 
   getRefreshToken(): string | null {
     return localStorage.getItem('refreshToken');
+  }
+
+  async refreshToken(): Promise<string | null> {
+    try {
+      const refreshToken = this.getRefreshToken();
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
+      }
+
+      const response = await apiClient.post<AuthResponse>('/v1/auth/refresh-token', { 
+        refreshToken 
+      });
+
+      if (response.status === 200 && response.data.success) {
+        const { tokens } = response.data.data;
+        localStorage.setItem('accessToken', tokens.accessToken);
+        localStorage.setItem('refreshToken', tokens.refreshToken);
+        return tokens.accessToken;
+      } else {
+        throw new Error('Token refresh failed');
+      }
+    } catch (error) {
+      // If refresh fails, clear all tokens
+      this.logout();
+      throw error;
+    }
   }
 }
 
