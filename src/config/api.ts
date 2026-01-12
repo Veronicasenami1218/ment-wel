@@ -38,11 +38,21 @@ apiClient.interceptors.response.use(
 
       try {
         // Try to refresh the token
-        const authService = (await import('./auth.service')).default;
-        const newToken = await authService.refreshToken();
-        
-        if (newToken) {
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (!refreshToken) {
+          throw new Error('No refresh token available');
+        }
+
+        const response = await apiClient.post('/v1/auth/refresh-token', { 
+          refreshToken 
+        });
+
+        if (response.status === 200 && response.data.success) {
+          const { tokens } = response.data.data;
+          localStorage.setItem('accessToken', tokens.accessToken);
+          localStorage.setItem('refreshToken', tokens.refreshToken);
+          
+          originalRequest.headers.Authorization = `Bearer ${tokens.accessToken}`;
           return apiClient(originalRequest);
         }
       } catch (refreshError) {

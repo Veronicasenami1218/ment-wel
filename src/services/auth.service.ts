@@ -144,32 +144,6 @@ class AuthService {
   getRefreshToken(): string | null {
     return localStorage.getItem('refreshToken');
   }
-
-  async refreshToken(): Promise<string | null> {
-    try {
-      const refreshToken = this.getRefreshToken();
-      if (!refreshToken) {
-        throw new Error('No refresh token available');
-      }
-
-      const response = await apiClient.post<AuthResponse>('/v1/auth/refresh-token', { 
-        refreshToken 
-      });
-
-      if (response.status === 200 && response.data.success) {
-        const { tokens } = response.data.data;
-        localStorage.setItem('accessToken', tokens.accessToken);
-        localStorage.setItem('refreshToken', tokens.refreshToken);
-        return tokens.accessToken;
-      } else {
-        throw new Error('Token refresh failed');
-      }
-    } catch (error) {
-      // If refresh fails, clear all tokens
-      this.logout();
-      throw error;
-    }
-  }
 }
 
 export default new AuthService();
