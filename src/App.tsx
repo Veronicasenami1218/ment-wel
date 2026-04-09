@@ -93,6 +93,11 @@ function App() {
               <MoodTrackingPage />
             </ProtectedRoute>
           } />
+          <Route path="mood/calendar" element={
+            <ProtectedRoute>
+              <MoodTrackingPage />
+            </ProtectedRoute>
+          } />
           <Route path="profile" element={
             <ProtectedRoute>
               <ProfilePage />
