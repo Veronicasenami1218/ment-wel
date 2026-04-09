@@ -9,6 +9,8 @@ import ContactPage from './pages/ContactPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import SSOCallback from './pages/auth/SSOCallback'
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
+import ResetPasswordPage from './pages/auth/ResetPasswordPage'
 import DashboardPage from './pages/dashboard/DashboardPage'
 import TherapistDirectoryPage from './pages/therapists/TherapistDirectoryPage'
 import TherapistDetailPage from './pages/therapists/TherapistDetailPage'
@@ -46,6 +48,9 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="sso-callback" element={<SSOCallback />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="reset-password/:token" element={<ResetPasswordPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
           
           {/* Protected Routes - Require Authentication */}
           <Route path="features" element={
