@@ -144,6 +144,20 @@ class AuthService {
   getRefreshToken(): string | null {
     return localStorage.getItem('refreshToken');
   }
+
+  async forgotPassword(email: string): Promise<void> {
+    const response = await apiClient.post('/v1/auth/forgot-password', { email });
+    if (!response.data.success) {
+      throw new Error(response.data.message || 'Failed to send reset email');
+    }
+  }
+
+  async resetPassword(token: string, password: string): Promise<void> {
+    const response = await apiClient.post('/v1/auth/reset-password', { token, password });
+    if (!response.data.success) {
+      throw new Error(response.data.message || 'Failed to reset password');
+    }
+  }
 }
 
 export default new AuthService();
