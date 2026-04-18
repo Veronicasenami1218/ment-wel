@@ -60,13 +60,20 @@ export default function Header({ isScrolled }: HeaderProps) {
   }
   const location = useLocation()
 
-  const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Features', href: '/features' },
-    { name: 'Therapists', href: '/therapists' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
-  ]
+  const navigation = isAuthenticated
+    ? [
+        { name: 'Dashboard', href: '/dashboard' },
+        { name: 'Mood', href: '/mood' },
+        { name: 'Therapists', href: '/therapists' },
+        { name: 'Profile', href: '/profile' },
+      ]
+    : [
+        { name: 'Home', href: '/' },
+        { name: 'Features', href: '/features' },
+        { name: 'Therapists', href: '/therapists' },
+        { name: 'About', href: '/about' },
+        { name: 'Contact', href: '/contact' },
+      ]
 
 
 
