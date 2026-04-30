@@ -6,6 +6,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'react-hot-toast'
 import { ClerkProvider } from '@clerk/clerk-react'
 import App from './App.tsx'
+import ChatBot from './components/ChatBot.tsx'
 import './index.css'
 
 // Import your Publishable Key
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <App />
+            <ChatBot />
             <Toaster
               position="top-right"
               toastOptions={{
