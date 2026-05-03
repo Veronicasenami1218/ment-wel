@@ -63,6 +63,7 @@ export default function Header({ isScrolled }: HeaderProps) {
   const navigation = isAuthenticated
     ? [
         { name: 'Dashboard', href: '/dashboard' },
+        { name: 'Assessments', href: '/assessments' },
         { name: 'Mood', href: '/mood' },
         { name: 'Therapists', href: '/therapists' },
         { name: 'Profile', href: '/profile' },
