@@ -25,7 +25,7 @@ Important rules:
 - Keep responses concise (2-4 sentences) unless the user needs more detail
 - Use a warm, friendly tone — not clinical or robotic`
 
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
 const QUICK_PROMPTS = [
   "I'm feeling anxious today",
@@ -49,7 +49,7 @@ export default function ChatBot() {
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
+  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY
 
   useEffect(() => {
     if (isOpen && !isMinimized) {
@@ -80,33 +80,43 @@ export default function ChatBot() {
     try {
       // Build conversation history for context
       const history = messages
-        .slice(1) // skip the initial greeting
+        .slice(1)
         .map((m) => ({
-          role: m.role === 'user' ? 'user' : 'model',
-          parts: [{ text: m.text }],
+          role: m.role === 'user' ? 'user' : 'assistant',
+          content: m.text,
         }))
 
-      const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+      const response = await fetch(OPENROUTER_API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'MentWel Chatbot',
+        },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: [
+          model: 'google/gemma-3-4b-it:free',
+          messages: [
+            // Gemma doesn't support system role — prepend as first user/assistant exchange
+            { role: 'user', content: SYSTEM_PROMPT },
+            { role: 'assistant', content: 'Understood. I am Welly, a compassionate mental wellness assistant. I am ready to support you.' },
             ...history,
-            { role: 'user', parts: [{ text: text.trim() }] },
+            { role: 'user', content: text.trim() },
           ],
-          generationConfig: {
-            temperature: 0.8,
-            maxOutputTokens: 300,
-          },
+          max_tokens: 300,
+          temperature: 0.8,
         }),
       })
 
-      if (!response.ok) throw new Error('API request failed')
+      if (!response.ok) {
+        const errData = await response.json()
+        console.error('OpenRouter API error:', errData)
+        throw new Error(errData?.error?.message || 'API request failed')
+      }
 
       const data = await response.json()
       const replyText =
-        data.candidates?.[0]?.content?.parts?.[0]?.text ||
+        data.choices?.[0]?.message?.content ||
         "I'm here for you. Could you tell me a bit more about how you're feeling?"
 
       setMessages((prev) => [
@@ -118,7 +128,8 @@ export default function ChatBot() {
           timestamp: new Date(),
         },
       ])
-    } catch {
+    } catch (err) {
+      console.error('ChatBot error:', err)
       setMessages((prev) => [
         ...prev,
         {
