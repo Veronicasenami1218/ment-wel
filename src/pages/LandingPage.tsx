@@ -10,8 +10,13 @@ import {
   ArrowRight,
   Sparkles,
   Sun,
-  Smile
+  Smile,
+  Mail,
+  Phone,
+  MapPin,
+  Send
 } from 'lucide-react'
+import { useState } from 'react'
 
 export default function LandingPage() {
   return (
@@ -344,7 +349,171 @@ export default function LandingPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="py-20 px-4 bg-gradient-to-br from-neutral-50 to-white">
+          <div className="container mx-auto max-w-6xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-14"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
+                Get in Touch
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Have a question or need support? We're here for you.
+              </p>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              {/* Contact Info */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="space-y-6"
+              >
+                {[
+                  { icon: Mail, label: 'Email Us', value: 'support@mentwel.com', color: 'from-sky-500 to-blue-600' },
+                  { icon: Phone, label: 'Call Us', value: '+234 800 MENTWEL', color: 'from-emerald-500 to-teal-600' },
+                  { icon: MapPin, label: 'Location', value: 'Lagos, Nigeria', color: 'from-purple-500 to-fuchsia-600' },
+                  { icon: Clock, label: 'Support Hours', value: '24/7 Available', color: 'from-amber-500 to-orange-500' },
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 }}
+                    className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow"
+                  >
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow shrink-0`}>
+                      <item.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wide">{item.label}</p>
+                      <p className="font-semibold text-neutral-800">{item.value}</p>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {/* Crisis Box */}
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
+                  <h3 className="text-base font-bold text-red-700 mb-2">🆘 Crisis Support</h3>
+                  <p className="text-sm text-red-600 mb-3">If you are in immediate danger, please contact emergency services.</p>
+                  <div className="space-y-2">
+                    {[
+                      { label: 'Nigeria Emergency', number: '112' },
+                      { label: 'Suicide Prevention', number: '0800-800-2000' },
+                    ].map(line => (
+                      <div key={line.label} className="flex items-center justify-between bg-white rounded-xl px-3 py-2 border border-red-100">
+                        <span className="text-sm text-neutral-600">{line.label}</span>
+                        <span className="text-sm font-bold text-red-600">{line.number}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Contact Form */}
+              <ContactForm />
+            </div>
+          </div>
+        </section>
       </div>
     </>
+  )
+}
+
+function ContactForm() {
+  const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!form.name || !form.email || !form.message) return
+    setLoading(true)
+    await new Promise(r => setTimeout(r, 1000))
+    setSent(true)
+    setLoading(false)
+  }
+
+  if (sent) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-10 text-center"
+      >
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircle className="w-8 h-8 text-green-500" />
+        </div>
+        <h3 className="text-xl font-bold text-neutral-900 mb-2">Message Sent!</h3>
+        <p className="text-neutral-500 mb-6">We'll get back to you within 24 hours.</p>
+        <button onClick={() => { setSent(false); setForm({ name: '', email: '', subject: '', message: '' }) }}
+          className="px-6 py-2.5 border-2 border-neutral-200 text-neutral-600 rounded-xl text-sm font-medium hover:bg-neutral-50 transition-all">
+          Send Another
+        </button>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.form
+      initial={{ opacity: 0, x: 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      onSubmit={handleSubmit}
+      className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 space-y-4"
+    >
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-neutral-700 mb-1">Full Name</label>
+          <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required
+            className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm"
+            placeholder="Your name" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-neutral-700 mb-1">Email</label>
+          <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required
+            className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm"
+            placeholder="your@email.com" />
+        </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-neutral-700 mb-1">Subject</label>
+        <select value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
+          className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm">
+          <option value="">Select a subject</option>
+          <option value="general">General Inquiry</option>
+          <option value="support">Technical Support</option>
+          <option value="therapist">Therapist Partnership</option>
+          <option value="crisis">Crisis Support</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-neutral-700 mb-1">Message</label>
+        <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} required rows={4}
+          className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm resize-none"
+          placeholder="Tell us how we can help..." />
+      </div>
+      <button type="submit" disabled={loading}
+        className="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-medium shadow hover:shadow-lg hover:-translate-y-0.5 transition-all disabled:opacity-60 flex items-center justify-center gap-2">
+        {loading
+          ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending...</>
+          : <><Send className="w-4 h-4" /> Send Message</>
+        }
+      </button>
+      <p className="text-xs text-neutral-400 text-center">
+        Or visit our full <Link to="/contact" className="text-emerald-600 hover:underline font-medium">Contact page</Link> for more options.
+      </p>
+    </motion.form>
   )
 }
