@@ -21,6 +21,9 @@ import AssessmentsPage from './pages/assessments/AssessmentsPage'
 import TakeAssessmentPage from './pages/assessments/TakeAssessmentPage'
 import AssessmentResultsPage from './pages/assessments/AssessmentResultsPage'
 import AssessmentHistoryPage from './pages/assessments/AssessmentHistoryPage'
+import ResourcesPage from './pages/resources/ResourcesPage'
+import ResourceDetailPage from './pages/resources/ResourceDetailPage'
+import BookmarksPage from './pages/resources/BookmarksPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
@@ -125,6 +128,21 @@ function App() {
           <Route path="assessments/:id/results" element={
             <ProtectedRoute>
               <AssessmentResultsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="resources" element={
+            <ProtectedRoute>
+              <ResourcesPage />
+            </ProtectedRoute>
+          } />
+          <Route path="resources/:id" element={
+            <ProtectedRoute>
+              <ResourceDetailPage />
+            </ProtectedRoute>
+          } />
+          <Route path="bookmarks" element={
+            <ProtectedRoute>
+              <BookmarksPage />
             </ProtectedRoute>
           } />
         </Route>
