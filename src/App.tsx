@@ -17,6 +17,10 @@ import TherapistDetailPage from './pages/therapists/TherapistDetailPage'
 import SessionBookingPage from './pages/sessions/SessionBookingPage'
 import MoodTrackingPage from './pages/mood/MoodTrackingPage'
 import ProfilePage from './pages/profile/ProfilePage'
+import AssessmentsPage from './pages/assessments/AssessmentsPage'
+import TakeAssessmentPage from './pages/assessments/TakeAssessmentPage'
+import AssessmentResultsPage from './pages/assessments/AssessmentResultsPage'
+import AssessmentHistoryPage from './pages/assessments/AssessmentHistoryPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
@@ -101,6 +105,26 @@ function App() {
           <Route path="profile" element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          } />
+          <Route path="assessments" element={
+            <ProtectedRoute>
+              <AssessmentsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="assessments/history" element={
+            <ProtectedRoute>
+              <AssessmentHistoryPage />
+            </ProtectedRoute>
+          } />
+          <Route path="assessments/:id/take" element={
+            <ProtectedRoute>
+              <TakeAssessmentPage />
+            </ProtectedRoute>
+          } />
+          <Route path="assessments/:id/results" element={
+            <ProtectedRoute>
+              <AssessmentResultsPage />
             </ProtectedRoute>
           } />
         </Route>
