@@ -21,6 +21,15 @@ import AssessmentsPage from './pages/assessments/AssessmentsPage'
 import TakeAssessmentPage from './pages/assessments/TakeAssessmentPage'
 import AssessmentResultsPage from './pages/assessments/AssessmentResultsPage'
 import AssessmentHistoryPage from './pages/assessments/AssessmentHistoryPage'
+import ResourcesPage from './pages/resources/ResourcesPage'
+import ResourceDetailPage from './pages/resources/ResourceDetailPage'
+import BookmarksPage from './pages/resources/BookmarksPage'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminLoginPage from './pages/admin/AdminLoginPage'
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import AdminUsersPage from './pages/admin/AdminUsersPage'
+import AdminAnalyticsPage from './pages/admin/AdminAnalyticsPage'
+import AdminPlaceholderPage from './pages/admin/AdminPlaceholderPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
@@ -127,10 +136,36 @@ function App() {
               <AssessmentResultsPage />
             </ProtectedRoute>
           } />
+          <Route path="resources" element={
+            <ProtectedRoute>
+              <ResourcesPage />
+            </ProtectedRoute>
+          } />
+          <Route path="resources/:id" element={
+            <ProtectedRoute>
+              <ResourceDetailPage />
+            </ProtectedRoute>
+          } />
+          <Route path="bookmarks" element={
+            <ProtectedRoute>
+              <BookmarksPage />
+            </ProtectedRoute>
+          } />
         </Route>
         
         {/* 404 Page */}
         <Route path="*" element={<NotFoundPage />} />
+
+        {/* Admin Routes - separate layout */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboardPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="counselors" element={<AdminPlaceholderPage title="Counselors" description="Manage counselor accounts and assignments." />} />
+          <Route path="resources" element={<AdminPlaceholderPage title="Resources" description="Manage the resource library content." />} />
+          <Route path="analytics" element={<AdminAnalyticsPage />} />
+          <Route path="settings" element={<AdminPlaceholderPage title="Settings" description="Platform configuration and settings." />} />
+        </Route>
       </Routes>
     </>
   )
