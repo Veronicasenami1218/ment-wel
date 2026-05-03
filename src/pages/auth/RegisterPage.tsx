@@ -186,9 +186,6 @@ export default function RegisterPage() {
                   placeholder="+234 XXX XXX XXXX"
                 />
               </div>
-
-
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="dateOfBirth" className="block text-sm font-medium text-neutral-700 mb-2">
@@ -219,25 +216,6 @@ export default function RegisterPage() {
                   </select>
                   {errors.gender && <p className="mt-1 text-xs text-red-500">⚠ {errors.gender.message}</p>}
                 </div>
-              </div>
-
-              <div>
-                <label htmlFor="country" className="block text-sm font-medium text-neutral-700 mb-2">
-                  Country
-                </label>
-                <select
-                  id="country"
-                  {...register('country', { required: 'Country is required' })}
-                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
-                >
-                  <option value="">Select country</option>
-                  <option value="Nigeria">Nigeria</option>
-                  <option value="Ghana">Ghana</option>
-                  <option value="Kenya">Kenya</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Other">Other</option>
-                </select>
-                {errors.country && <p className="mt-1 text-sm text-red-500">⚠ {errors.country.message}</p>}
               </div>
 
               <div>
