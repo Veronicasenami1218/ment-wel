@@ -95,13 +95,13 @@ export default function MoodTrackingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-24 pb-12">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-24 pb-12">
       <div className="container mx-auto px-4 max-w-2xl">
-        <h1 className="text-3xl font-bold text-neutral-900 mb-2">Mood Tracking</h1>
-        <p className="text-neutral-500 mb-8">Track how you feel each day and spot patterns over time.</p>
+        <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">Mood Tracking</h1>
+        <p className="text-neutral-500 dark:text-neutral-400 mb-8">Track how you feel each day and spot patterns over time.</p>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8 bg-white rounded-xl p-1 shadow-sm border border-neutral-100">
+        <div className="flex gap-2 mb-8 bg-white dark:bg-neutral-800 rounded-xl p-1 shadow-sm border border-neutral-100 dark:border-neutral-700">
           {tabs.map((tab) => (
             <button
               key={tab.key}
@@ -109,7 +109,7 @@ export default function MoodTrackingPage() {
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === tab.key
                   ? 'bg-gradient-to-r from-sky-500 to-fuchsia-600 text-white shadow'
-                  : 'text-neutral-500 hover:text-neutral-800'
+                  : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200'
               }`}
             >
               {tab.icon}
@@ -120,10 +120,10 @@ export default function MoodTrackingPage() {
 
         {/* LOG TAB */}
         {activeTab === 'log' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 space-y-6">
+          <div className="bg-white dark:bg-neutral-800 rounded-2xl shadow-sm border border-neutral-100 dark:border-neutral-700 p-6 space-y-6">
             {/* Mood selector */}
             <div>
-              <p className="text-sm font-medium text-neutral-700 mb-3">How are you feeling?</p>
+              <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">How are you feeling?</p>
               <div className="flex justify-between gap-2">
                 {MOODS.map((m) => (
                   <button
@@ -132,7 +132,7 @@ export default function MoodTrackingPage() {
                     className={`flex-1 flex flex-col items-center gap-1 py-3 rounded-xl border-2 transition-all ${
                       selectedMood === m.value
                         ? m.color + ' scale-105 shadow-md'
-                        : 'border-neutral-200 hover:border-neutral-300'
+                        : 'border-neutral-200 dark:border-neutral-600 hover:border-neutral-300 dark:hover:border-neutral-500'
                     }`}
                   >
                     <span className="text-2xl">{m.emoji}</span>
@@ -144,28 +144,28 @@ export default function MoodTrackingPage() {
 
             {/* Date picker */}
             <div>
-              <p className="text-sm font-medium text-neutral-700 mb-2">Date</p>
+              <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Date</p>
               <DatePicker
                 selected={selectedDate}
                 onChange={(date) => date && setSelectedDate(date)}
                 maxDate={new Date()}
                 dateFormat="MMMM d, yyyy"
-                className="w-full px-4 py-2.5 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-sky-500 transition-all text-sm"
+                className="w-full px-4 py-2.5 border-2 border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 rounded-lg focus:outline-none focus:border-sky-500 transition-all text-sm"
               />
             </div>
 
             {/* Notes */}
             <div>
-              <p className="text-sm font-medium text-neutral-700 mb-2">Notes <span className="text-neutral-400 font-normal">(optional)</span></p>
+              <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Notes <span className="text-neutral-400 dark:text-neutral-500 font-normal">(optional)</span></p>
               <textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
                 maxLength={300}
                 placeholder="What's on your mind today?"
-                className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-sky-500 transition-all text-sm resize-none"
+                className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 rounded-lg focus:outline-none focus:border-sky-500 transition-all text-sm resize-none"
               />
-              <p className="text-xs text-neutral-400 text-right mt-1">{note.length}/300</p>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500 text-right mt-1">{note.length}/300</p>
             </div>
 
             <button

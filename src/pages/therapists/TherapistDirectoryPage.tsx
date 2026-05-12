@@ -26,7 +26,7 @@ export default function TherapistDirectoryPage() {
   })
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-20 pb-16">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-20 pb-16">
       <div className="container mx-auto px-4 max-w-6xl">
 
         {/* Header */}
@@ -35,25 +35,25 @@ export default function TherapistDirectoryPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center py-12"
         >
-          <h1 className="text-4xl font-bold text-neutral-900 mb-3">Find Your Therapist</h1>
-          <p className="text-neutral-500 max-w-xl mx-auto">
+          <h1 className="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Find Your Therapist</h1>
+          <p className="text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto">
             Browse our network of licensed, verified mental health professionals and find the right match for you.
           </p>
         </motion.div>
 
         {/* Search & Filter */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-neutral-100 mb-8">
+        <div className="bg-white dark:bg-neutral-800 rounded-2xl p-4 shadow-sm border border-neutral-100 dark:border-neutral-700 mb-8">
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 dark:text-neutral-500" />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by name or specialty..."
-                className="w-full pl-10 pr-4 py-2.5 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-sky-500 transition-all text-sm"
+                className="w-full pl-10 pr-4 py-2.5 border-2 border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 rounded-xl focus:outline-none focus:border-sky-500 transition-all text-sm"
               />
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-500">
+            <div className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
               <Filter className="w-4 h-4" />
               <span>{filtered.length} therapists found</span>
             </div>
@@ -68,7 +68,7 @@ export default function TherapistDirectoryPage() {
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                   activeSpec === spec
                     ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow'
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                    : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600'
                 }`}
               >
                 {spec}
@@ -85,7 +85,7 @@ export default function TherapistDirectoryPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.07 }}
-              className="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100 hover:shadow-md hover:-translate-y-1 transition-all"
+              className="bg-white dark:bg-neutral-800 rounded-2xl p-6 shadow-sm border border-neutral-100 dark:border-neutral-700 hover:shadow-md hover:-translate-y-1 transition-all"
             >
               {/* Avatar & Status */}
               <div className="flex items-start justify-between mb-4">
@@ -95,13 +95,13 @@ export default function TherapistDirectoryPage() {
                   </div>
                   <span className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${therapist.available ? 'bg-green-400' : 'bg-neutral-300'}`} />
                 </div>
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${therapist.available ? 'bg-green-50 text-green-600' : 'bg-neutral-100 text-neutral-500'}`}>
+                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${therapist.available ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400'}`}>
                   {therapist.available ? 'Available' : 'Busy'}
                 </span>
               </div>
 
-              <h3 className="font-bold text-neutral-900">{therapist.name}</h3>
-              <p className="text-sm text-neutral-500 mb-3">{therapist.title}</p>
+              <h3 className="font-bold text-neutral-900 dark:text-neutral-100">{therapist.name}</h3>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">{therapist.title}</p>
 
               {/* Specializations */}
               <div className="flex flex-wrap gap-1.5 mb-4">
@@ -111,10 +111,10 @@ export default function TherapistDirectoryPage() {
               </div>
 
               {/* Stats */}
-              <div className="flex items-center gap-4 text-sm text-neutral-500 mb-5">
+              <div className="flex items-center gap-4 text-sm text-neutral-500 dark:text-neutral-400 mb-5">
                 <div className="flex items-center gap-1">
                   <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                  <span className="font-semibold text-neutral-700">{therapist.rating}</span>
+                  <span className="font-semibold text-neutral-700 dark:text-neutral-300">{therapist.rating}</span>
                   <span>({therapist.reviews})</span>
                 </div>
                 <div className="flex items-center gap-1">

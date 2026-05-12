@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Heart, User, LogOut, Settings, Calendar, BarChart3 } from 'lucide-react'
+import { Menu, X, Heart, User, LogOut, Settings, Calendar, BarChart3, Sun, Moon } from 'lucide-react'
 import { useAuth as useClerkAuth, UserButton, SignInButton } from '@clerk/clerk-react'
 import { useAuth as useCredentialAuth } from '../hooks/useAuth'
+import { useDarkMode } from '../hooks/useDarkMode'
 import { cn } from '../lib/utils'
 
 interface HeaderProps {
@@ -14,6 +15,7 @@ export default function Header({ isScrolled }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isSignedIn } = useClerkAuth()
   const { user: credentialUser, logout: credentialLogout, isAuthenticated: isCredentialAuth } = useCredentialAuth()
+  const { isDark, toggle: toggleDark } = useDarkMode()
 
   // Determine which authentication method is active
   const isAuthenticated = isSignedIn || isCredentialAuth
@@ -64,6 +66,7 @@ export default function Header({ isScrolled }: HeaderProps) {
     ? [
         { name: 'Dashboard', href: '/dashboard' },
         { name: 'Assessments', href: '/assessments' },
+        { name: 'Messages', href: '/chat' },
         { name: 'Mood', href: '/mood' },
         { name: 'Therapists', href: '/therapists' },
         { name: 'Profile', href: '/profile' },
@@ -85,7 +88,7 @@ export default function Header({ isScrolled }: HeaderProps) {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-soft border-b border-neutral-200'
+          ? 'bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-soft border-b border-neutral-200 dark:border-neutral-700'
           : 'bg-transparent'
       )}
     >
@@ -119,6 +122,14 @@ export default function Header({ isScrolled }: HeaderProps) {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
+            {/* Dark mode toggle */}
+            <button
+              onClick={toggleDark}
+              className="p-2 rounded-lg text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800 transition-all"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
             {isAuthenticated ? (
               <>
                 {isSignedIn ? (
@@ -190,16 +201,25 @@ export default function Header({ isScrolled }: HeaderProps) {
           </div>
 
           {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-md text-neutral-600 hover:text-primary-600 hover:bg-neutral-100 transition-colors"
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          <div className="lg:hidden flex items-center gap-2">
+            <button
+              onClick={toggleDark}
+              className="p-2 rounded-md text-neutral-600 hover:text-primary-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-md text-neutral-600 hover:text-primary-600 hover:bg-neutral-100 transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

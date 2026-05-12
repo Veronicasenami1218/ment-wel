@@ -59,29 +59,29 @@ export default function TakeAssessmentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-20 pb-16">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-20 pb-16">
       <div className="container mx-auto px-4 max-w-2xl">
 
         {/* Header */}
         <div className="flex items-center justify-between py-6">
-          <Link to="/assessments" className="flex items-center gap-2 text-sm text-neutral-500 hover:text-sky-600 transition-colors">
+          <Link to="/assessments" className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-sky-600 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back
           </Link>
-          <span className="text-sm font-medium text-neutral-500">
+          <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
             Question {currentIndex + 1} of {totalQuestions}
           </span>
         </div>
 
         {/* Assessment Title */}
-        <h1 className="text-xl font-bold text-neutral-900 mb-6">{assessment.title}</h1>
+        <h1 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">{assessment.title}</h1>
 
         {/* Progress Bar */}
         <div className="mb-8">
-          <div className="flex justify-between text-xs text-neutral-400 mb-2">
+          <div className="flex justify-between text-xs text-neutral-400 dark:text-neutral-500 mb-2">
             <span>Progress</span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <div className="h-2 bg-neutral-200 rounded-full overflow-hidden">
+          <div className="h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-sky-500 to-fuchsia-600 rounded-full"
               initial={{ width: 0 }}
@@ -96,7 +96,7 @@ export default function TakeAssessmentPage() {
                 key={q.id}
                 className={`w-2 h-2 rounded-full transition-all ${
                   answers[q.id] !== undefined ? 'bg-sky-500' :
-                  i === currentIndex ? 'bg-sky-300' : 'bg-neutral-200'
+                  i === currentIndex ? 'bg-sky-300' : 'bg-neutral-200 dark:bg-neutral-600'
                 }`}
               />
             ))}
