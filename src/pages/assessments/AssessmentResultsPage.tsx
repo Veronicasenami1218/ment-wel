@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { CheckCircle, ArrowRight, RotateCcw, MessageCircle, Download } from 'lucide-react'
+import { CheckCircle, ArrowRight, RotateCcw, MessageCircle, Download, Loader2 } from 'lucide-react'
 import { STATIC_ASSESSMENTS } from '../../data/assessments'
 import type { AssessmentResult } from '../../services/assessment.service'
+import { generateAssessmentPDF, generateSimpleAssessmentPDF } from '../../utils/pdfExport'
+import toast from 'react-hot-toast'
 
 const SEVERITY_CONFIG = {
   minimal: { label: 'Minimal', color: 'text-green-600', bg: 'bg-green-50 border-green-200', bar: 'bg-green-500', emoji: '😊' },
@@ -15,6 +17,7 @@ const SEVERITY_CONFIG = {
 export default function AssessmentResultsPage() {
   const { id } = useParams<{ id: string }>()
   const [result, setResult] = useState<AssessmentResult | null>(null)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
 
   useEffect(() => {
     const stored = sessionStorage.getItem(`result_${id}`)
@@ -22,6 +25,27 @@ export default function AssessmentResultsPage() {
   }, [id])
 
   const assessment = STATIC_ASSESSMENTS.find(a => a.id === id)
+
+  const handleDownloadPDF = async () => {
+    if (!result) return
+    
+    setIsGeneratingPDF(true)
+    try {
+      // Try the advanced PDF generation first
+      await generateAssessmentPDF(result, 'assessment-results-content')
+    } catch (error) {
+      console.log('Advanced PDF generation failed, falling back to simple PDF')
+      try {
+        // Fallback to simple PDF generation
+        await generateSimpleAssessmentPDF(result)
+        toast.success('PDF downloaded successfully!')
+      } catch (fallbackError) {
+        toast.error('Failed to generate PDF. Please try again.')
+      }
+    } finally {
+      setIsGeneratingPDF(false)
+    }
+  }
 
   if (!result) {
     return (
@@ -39,6 +63,7 @@ export default function AssessmentResultsPage() {
   return (
     <div className="min-h-screen bg-neutral-50 pt-20 pb-16">
       <div className="container mx-auto px-4 max-w-2xl">
+        <div id="assessment-results-content">
 
         {/* Header */}
         <motion.div
@@ -139,6 +164,23 @@ export default function AssessmentResultsPage() {
           >
             <MessageCircle className="w-4 h-4" /> Talk to Counselor
           </Link>
+          <button
+            onClick={handleDownloadPDF}
+            disabled={isGeneratingPDF}
+            className="flex items-center justify-center gap-2 py-3 border-2 border-neutral-200 text-neutral-600 rounded-xl font-medium text-sm hover:bg-neutral-50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isGeneratingPDF ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" />
+                Download PDF
+              </>
+            )}
+          </button>
           <Link
             to={`/assessments/${id}/take`}
             className="flex items-center justify-center gap-2 py-3 border-2 border-neutral-200 text-neutral-600 rounded-xl font-medium text-sm hover:bg-neutral-50 transition-all"
@@ -151,13 +193,8 @@ export default function AssessmentResultsPage() {
           >
             View History <ArrowRight className="w-4 h-4" />
           </Link>
-          <Link
-            to="/assessments"
-            className="flex items-center justify-center gap-2 py-3 border-2 border-neutral-200 text-neutral-600 rounded-xl font-medium text-sm hover:bg-neutral-50 transition-all"
-          >
-            All Assessments
-          </Link>
         </motion.div>
+        </div>
       </div>
     </div>
   )

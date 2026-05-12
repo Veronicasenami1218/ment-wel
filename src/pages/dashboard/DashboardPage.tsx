@@ -89,9 +89,9 @@ export default function DashboardPage() {
     },
     {
       label: 'Talk to Counselor',
-      desc: 'Chat with a professional',
+      desc: 'Browse and book therapists',
       icon: MessageCircle,
-      to: '/chat',
+      to: '/therapists',
       gradient: 'from-emerald-500 to-teal-600',
     },
     {
@@ -110,7 +110,7 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50 pt-20 pb-16">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 pt-20 pb-16">
       <div className="container mx-auto px-4 max-w-6xl">
 
         {/* Hero Banner */}
@@ -155,7 +155,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
-          className="flex gap-4 items-start bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-8"
+          className="flex gap-4 items-start bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5 mb-8"
         >
           <div className="w-9 h-9 bg-amber-400 rounded-xl flex items-center justify-center shrink-0">
             <Lightbulb className="w-5 h-5 text-white" />
@@ -164,7 +164,7 @@ export default function DashboardPage() {
             <p className="text-xs font-bold uppercase tracking-widest text-amber-600 mb-1 flex items-center gap-1">
               <Sparkles className="w-3 h-3" /> Wellness Tip of the Day
             </p>
-            <p className="text-amber-900 text-sm leading-relaxed">{todaysTip}</p>
+            <p className="text-amber-900 dark:text-amber-100 text-sm leading-relaxed">{todaysTip}</p>
           </div>
         </motion.div>
 
@@ -177,14 +177,14 @@ export default function DashboardPage() {
               initial="hidden"
               animate="show"
               variants={fadeUp}
-              className={`${stat.bg} rounded-2xl p-5 border border-white shadow-sm hover:shadow-md transition-shadow`}
+              className={`${stat.bg} rounded-2xl p-5 border border-white dark:border-neutral-700 shadow-sm hover:shadow-md transition-shadow`}
             >
               <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-3 shadow`}>
                 <stat.icon className="w-5 h-5 text-white" />
               </div>
               <p className={`text-2xl font-bold ${stat.text}`}>{stat.value}</p>
-              <p className="text-xs font-medium text-neutral-600 mt-0.5">{stat.label}</p>
-              <p className="text-xs text-neutral-400 mt-0.5">{stat.sub}</p>
+              <p className="text-xs font-medium text-neutral-600 dark:text-neutral-300 mt-0.5">{stat.label}</p>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">{stat.sub}</p>
             </motion.div>
           ))}
         </div>
@@ -196,7 +196,7 @@ export default function DashboardPage() {
           transition={{ delay: 0.3, duration: 0.4 }}
           className="mb-8"
         >
-          <h2 className="text-lg font-bold text-neutral-800 mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {quickActions.map((action, i) => (
               <motion.div key={action.label} custom={i} initial="hidden" animate="show" variants={fadeUp}>
@@ -226,22 +226,22 @@ export default function DashboardPage() {
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.4 }}
-            className="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100"
+            className="bg-white dark:bg-neutral-800 rounded-2xl p-6 shadow-sm border border-neutral-100 dark:border-neutral-700"
           >
-            <h2 className="text-lg font-bold text-neutral-800 mb-4">Explore MentWel</h2>
+            <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-4">Explore MentWel</h2>
             <div className="space-y-3">
               {features.map((f) => (
                 <Link
                   key={f.label}
                   to={f.to}
-                  className="flex items-center gap-4 p-3 rounded-xl hover:bg-neutral-50 transition-colors group"
+                  className="flex items-center gap-4 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group"
                 >
                   <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-xl flex items-center justify-center shrink-0 shadow-sm">
                     <f.icon className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-neutral-800">{f.label}</p>
-                    <p className="text-xs text-neutral-400 truncate">{f.desc}</p>
+                    <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-100">{f.label}</p>
+                    <p className="text-xs text-neutral-400 dark:text-neutral-500 truncate">{f.desc}</p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-neutral-300 group-hover:text-violet-500 group-hover:translate-x-1 transition-all shrink-0" />
                 </Link>
@@ -254,15 +254,15 @@ export default function DashboardPage() {
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.45, duration: 0.4 }}
-            className="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100"
+            className="bg-white dark:bg-neutral-800 rounded-2xl p-6 shadow-sm border border-neutral-100 dark:border-neutral-700"
           >
-            <h2 className="text-lg font-bold text-neutral-800 mb-4">Recent Activity</h2>
+            <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-4">Recent Activity</h2>
             <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-fuchsia-100 rounded-2xl flex items-center justify-center mb-4">
-                <Sparkles className="w-7 h-7 text-violet-400" />
+              <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-fuchsia-100 dark:from-violet-900/30 dark:to-fuchsia-900/30 rounded-2xl flex items-center justify-center mb-4">
+                <Sparkles className="w-7 h-7 text-violet-400 dark:text-violet-300" />
               </div>
-              <p className="font-semibold text-neutral-700">Your journey starts here</p>
-              <p className="text-sm text-neutral-400 mt-1 max-w-xs">
+              <p className="font-semibold text-neutral-700 dark:text-neutral-200">Your journey starts here</p>
+              <p className="text-sm text-neutral-400 dark:text-neutral-500 mt-1 max-w-xs">
                 Complete an assessment or log your mood to see your activity here.
               </p>
               <Link

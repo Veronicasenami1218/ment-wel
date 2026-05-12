@@ -11,6 +11,7 @@ import RegisterPage from './pages/auth/RegisterPage'
 import SSOCallback from './pages/auth/SSOCallback'
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage'
 import ResetPasswordPage from './pages/auth/ResetPasswordPage'
+import EmailVerificationPage from './pages/auth/EmailVerificationPage'
 import DashboardPage from './pages/dashboard/DashboardPage'
 import TherapistDirectoryPage from './pages/therapists/TherapistDirectoryPage'
 import TherapistDetailPage from './pages/therapists/TherapistDetailPage'
@@ -24,6 +25,8 @@ import AssessmentHistoryPage from './pages/assessments/AssessmentHistoryPage'
 import ResourcesPage from './pages/resources/ResourcesPage'
 import ResourceDetailPage from './pages/resources/ResourceDetailPage'
 import BookmarksPage from './pages/resources/BookmarksPage'
+import ChatDashboardPage from './pages/chat/ChatDashboardPage'
+import ChatWindowPage from './pages/chat/ChatWindowPage'
 import AdminLayout from './pages/admin/AdminLayout'
 import AdminLoginPage from './pages/admin/AdminLoginPage'
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
@@ -64,6 +67,8 @@ function App() {
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="reset-password/:token" element={<ResetPasswordPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route path="verify-email/:token" element={<EmailVerificationPage />} />
+          <Route path="verify-email" element={<EmailVerificationPage />} />
           
           {/* Protected Routes - Require Authentication */}
           <Route path="features" element={
@@ -149,6 +154,16 @@ function App() {
           <Route path="bookmarks" element={
             <ProtectedRoute>
               <BookmarksPage />
+            </ProtectedRoute>
+          } />
+          <Route path="chat" element={
+            <ProtectedRoute>
+              <ChatDashboardPage />
+            </ProtectedRoute>
+          } />
+          <Route path="chat/:sessionId" element={
+            <ProtectedRoute>
+              <ChatWindowPage />
             </ProtectedRoute>
           } />
         </Route>
