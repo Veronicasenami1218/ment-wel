@@ -33,3 +33,6 @@ coverage/
 
 # package-lock.json
 package-lock.json*
+
+#API ENDPOINTS
+API_ENDPOINTS.md
