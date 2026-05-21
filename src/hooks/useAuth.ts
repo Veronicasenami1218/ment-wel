@@ -109,6 +109,23 @@ export const useAuth = () => {
     }
   }
 
+  /**
+   * Patch the in-memory + persisted user (e.g. after editing profile fields or
+   * uploading a new profile picture). All `useAuth()` consumers re-render
+   * automatically via useSyncExternalStore.
+   */
+  const updateUser = (patch: Partial<User>) => {
+    const base = currentState.user ?? readUserFromStorage()
+    if (!base) return
+    const next: User = { ...base, ...patch }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+    } catch {
+      /* storage full / disabled — keep going so UI still updates */
+    }
+    setState({ user: next })
+  }
+
   return {
     user: state.user,
     loading: state.loading,
@@ -116,6 +133,7 @@ export const useAuth = () => {
     login,
     register,
     logout,
+    updateUser,
     isAuthenticated: !!state.user,
   }
 }

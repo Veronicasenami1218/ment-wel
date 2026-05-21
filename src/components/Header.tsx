@@ -175,11 +175,21 @@ export default function Header({ isScrolled }: HeaderProps) {
                 ) : (
                   // Credential-based User
                   <div className="relative group">
-                    <button className="flex items-center space-x-2 text-sm font-medium text-neutral-700 hover:text-primary-600 transition-colors">
-                      <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm font-semibold">
-                          {getUserInitials(credentialUser)}
-                        </span>
+                    <button className="flex items-center space-x-2 text-sm font-medium text-neutral-700 dark:text-neutral-200 hover:text-primary-600 transition-colors">
+                      <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white dark:ring-neutral-700 shadow-sm">
+                        {credentialUser?.profilePicture ? (
+                          <img
+                            src={credentialUser.profilePicture}
+                            alt={getUserDisplayName(credentialUser)}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center">
+                            <span className="text-white text-sm font-semibold">
+                              {getUserInitials(credentialUser)}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <span>{getUserDisplayName(credentialUser)}</span>
                     </button>

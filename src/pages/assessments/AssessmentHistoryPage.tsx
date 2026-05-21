@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Brain, Wind, Activity, Clock } from 'lucide-react'
 import { STATIC_ASSESSMENTS } from '../../data/assessments'
+import { readAssessments } from '../../hooks/useUserStats'
 import type { AssessmentResult } from '../../services/assessment.service'
 
 const SEVERITY_CONFIG = {
@@ -28,11 +29,22 @@ export default function AssessmentHistoryPage() {
   const [history, setHistory] = useState<AssessmentResult[]>([])
 
   useEffect(() => {
-    // Load all stored results from sessionStorage
+    // Persistent history (survives reload). Falls back to legacy per-assessment
+    // sessionStorage entries written by older builds.
+    const persistent = readAssessments()
+    if (persistent.length) {
+      const sorted = [...persistent].sort(
+        (a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime()
+      )
+      setHistory(sorted)
+      return
+    }
     const results: AssessmentResult[] = []
     STATIC_ASSESSMENTS.forEach(a => {
       const stored = sessionStorage.getItem(`result_${a.id}`)
-      if (stored) results.push(JSON.parse(stored))
+      if (stored) {
+        try { results.push(JSON.parse(stored)) } catch { /* ignore */ }
+      }
     })
     results.sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
     setHistory(results)
@@ -47,7 +59,7 @@ export default function AssessmentHistoryPage() {
             <ArrowLeft className="w-4 h-4" /> Back to Assessments
           </Link>
           <h1 className="text-3xl font-bold text-neutral-900 mb-2">Assessment History</h1>
-          <p className="text-neutral-500">Your past assessment results from this session.</p>
+          <p className="text-neutral-500">All of your past assessment results.</p>
         </div>
 
         {history.length === 0 ? (

@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight, CheckCircle, X } from 'lucide-react'
 import { STATIC_ASSESSMENTS, calculateResult } from '../../data/assessments'
+import { saveAssessmentResult } from '../../hooks/useUserStats'
 import toast from 'react-hot-toast'
 
 export default function TakeAssessmentPage() {
@@ -53,8 +54,11 @@ export default function TakeAssessmentPage() {
 
   const handleSubmit = () => {
     const result = calculateResult(assessment.id, answers)
-    // Store result in sessionStorage to pass to results page
+    // Keep sessionStorage write for the Results page hand-off…
     sessionStorage.setItem(`result_${assessment.id}`, JSON.stringify(result))
+    // …and ALSO push into persistent history so the Dashboard counter and the
+    // History page survive a full page reload.
+    saveAssessmentResult(result)
     navigate(`/assessments/${assessment.id}/results`)
   }
 
