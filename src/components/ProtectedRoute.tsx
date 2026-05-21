@@ -8,22 +8,23 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { isSignedIn, isLoaded } = useClerkAuth()
-  const { isAuthenticated: isCredentialAuth, loading: credentialLoading } = useCredentialAuth()
+  const { isAuthenticated: isCredentialAuth } = useCredentialAuth()
   const location = useLocation()
 
-  // Wait for both auth systems to finish loading
-  if (!isLoaded || credentialLoading) {
+  // If we already have a credential-based session, allow access immediately
+  // without waiting for Clerk to finish loading.
+  if (isCredentialAuth) return <>{children}</>
+
+  // Otherwise wait for Clerk to load before deciding.
+  if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-500" />
       </div>
     )
   }
 
-  // Allow access if signed in via Clerk OR via credential login
-  const isAuthenticated = isSignedIn || isCredentialAuth
-
-  if (!isAuthenticated) {
+  if (!isSignedIn) {
     return <Navigate to="/login" state={{ from: location }} replace />
   }
 

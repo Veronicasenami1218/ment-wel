@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Heart, User, LogOut, Settings, Calendar, BarChart3, Sun, Moon } from 'lucide-react'
-import { useAuth as useClerkAuth, UserButton, SignInButton } from '@clerk/clerk-react'
+import { useAuth as useClerkAuth, useClerk, UserButton, SignInButton } from '@clerk/clerk-react'
 import { useAuth as useCredentialAuth } from '../hooks/useAuth'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { cn } from '../lib/utils'
@@ -14,12 +14,40 @@ interface HeaderProps {
 export default function Header({ isScrolled }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isSignedIn } = useClerkAuth()
+  const { signOut: clerkSignOut } = useClerk()
   const { user: credentialUser, logout: credentialLogout, isAuthenticated: isCredentialAuth } = useCredentialAuth()
   const { isDark, toggle: toggleDark } = useDarkMode()
 
   // Determine which authentication method is active
   const isAuthenticated = isSignedIn || isCredentialAuth
-  const isUsingCredentials = !isSignedIn && isCredentialAuth
+
+  // Unified sign-out that clears both Clerk and our backend session.
+  const handleSignOut = async () => {
+    try {
+      await credentialLogout()
+    } catch {
+      /* ignore — we still want to continue */
+    }
+    if (isSignedIn) {
+      await clerkSignOut(() => {
+        window.location.href = '/'
+      })
+    } else {
+      window.location.href = '/'
+    }
+  }
+
+  // When Clerk transitions from signed-in to signed-out (e.g. via the built-in
+  // UserButton's "Sign out"), also clear our backend session so the two systems
+  // stay in sync.
+  const prevSignedInRef = useRef<boolean | undefined>(undefined)
+  useEffect(() => {
+    const prev = prevSignedInRef.current
+    if (prev === true && isSignedIn === false) {
+      credentialLogout().catch(() => undefined)
+    }
+    prevSignedInRef.current = isSignedIn
+  }, [isSignedIn, credentialLogout])
 
   const userMenuItems = [
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
@@ -171,7 +199,7 @@ export default function Header({ isScrolled }: HeaderProps) {
                         ))}
                         <hr className="my-2 border-neutral-200" />
                         <button
-                          onClick={credentialLogout}
+                          onClick={handleSignOut}
                           className="flex items-center space-x-3 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-error-600 transition-colors w-full"
                         >
                           <LogOut className="w-4 h-4" />

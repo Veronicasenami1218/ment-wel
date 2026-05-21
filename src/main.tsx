@@ -6,7 +6,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'react-hot-toast'
 import { ClerkProvider } from '@clerk/clerk-react'
 import App from './App.tsx'
-import ChatBot from './components/ChatBot.tsx'
+import ChatBotLauncher from './components/ChatBotLauncher.tsx'
 import './index.css'
 
 // Import your Publishable Key
@@ -29,12 +29,19 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      signInUrl="/login"
+      signUpUrl="/register"
+      signInFallbackRedirectUrl="/sso-callback"
+      signUpFallbackRedirectUrl="/sso-callback"
+      afterSignOutUrl="/"
+    >
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <App />
-            <ChatBot />
+            <ChatBotLauncher />
             <Toaster
               position="top-right"
               toastOptions={{

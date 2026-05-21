@@ -79,7 +79,7 @@ export default function ProfilePage() {
       // In real implementation:
       // const formData = new FormData()
       // formData.append('profilePicture', file)
-      // await apiClient.post('/v1/users/profile-picture', formData)
+      // await apiClient.post('/users/profile-picture', formData)
       
       toast.success('Profile picture updated successfully!')
     } catch (error) {
@@ -94,7 +94,7 @@ export default function ProfilePage() {
   const onSaveProfile = async (data: ProfileFormData) => {
     setSavingProfile(true)
     try {
-      await apiClient.patch('/v1/users/profile', data)
+      await apiClient.put('/users/profile', data)
       toast.success('Profile updated successfully')
       setEditingProfile(false)
     } catch (error: any) {
@@ -107,7 +107,7 @@ export default function ProfilePage() {
   const onChangePassword = async (data: PasswordFormData) => {
     setSavingPassword(true)
     try {
-      await apiClient.post('/v1/auth/change-password', {
+      await apiClient.post('/users/change-password', {
         currentPassword: data.currentPassword,
         newPassword: data.newPassword,
       })

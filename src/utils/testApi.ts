@@ -36,7 +36,7 @@ export const testRegistration = async () => {
 
   try {
     console.log('Testing registration endpoint...');
-    const response = await apiClient.post('/v1/auth/register', testUser);
+    const response = await apiClient.post('/auth/register', testUser);
     console.log('Registration Response:', response.data);
     return response.data;
   } catch (error: any) {

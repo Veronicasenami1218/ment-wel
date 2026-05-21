@@ -33,7 +33,7 @@ export interface AssessmentResult {
 class AssessmentService {
   async getAssessments(): Promise<Assessment[]> {
     try {
-      const response = await apiClient.get('/v1/assessments');
+      const response = await apiClient.get('/assessments');
       return response.data.data || [];
     } catch {
       return [];
@@ -42,7 +42,7 @@ class AssessmentService {
 
   async getAssessmentById(id: string): Promise<Assessment | null> {
     try {
-      const response = await apiClient.get(`/v1/assessments/${id}`);
+      const response = await apiClient.get(`/assessments/${id}`);
       return response.data.data;
     } catch {
       return null;
@@ -50,13 +50,13 @@ class AssessmentService {
   }
 
   async submitAssessment(assessmentId: string, answers: Record<string, number>): Promise<AssessmentResult> {
-    const response = await apiClient.post(`/v1/assessments/${assessmentId}/submit`, { answers });
+    const response = await apiClient.post(`/assessments/${assessmentId}/submit`, { answers });
     return response.data.data;
   }
 
   async getHistory(): Promise<AssessmentResult[]> {
     try {
-      const response = await apiClient.get('/v1/assessments/history');
+      const response = await apiClient.get('/assessments/history');
       return response.data.data || [];
     } catch {
       return [];
@@ -65,7 +65,7 @@ class AssessmentService {
 
   async getResultById(resultId: string): Promise<AssessmentResult | null> {
     try {
-      const response = await apiClient.get(`/v1/assessments/results/${resultId}`);
+      const response = await apiClient.get(`/assessments/results/${resultId}`);
       return response.data.data;
     } catch {
       return null;

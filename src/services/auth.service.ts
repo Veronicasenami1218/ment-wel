@@ -54,7 +54,7 @@ export interface AuthResponse {
 class AuthService {
   async login(credentials: LoginCredentials): Promise<User> {
     try {
-      const response = await apiClient.post<AuthResponse>('/v1/auth/login', credentials);
+      const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
       
       if (response.status === 200 && response.data.success) {
         const { user, tokens } = response.data.data;
@@ -76,7 +76,7 @@ class AuthService {
 
   async register(data: RegisterData): Promise<User> {
     try {
-      const response = await apiClient.post<AuthResponse>('/v1/auth/register', data);
+      const response = await apiClient.post<AuthResponse>('/auth/register', data);
       
       if (response.status === 201 && response.data.success) {
         const { user, tokens } = response.data.data;
@@ -101,7 +101,7 @@ class AuthService {
       // Call logout endpoint to invalidate tokens on server
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
-        await apiClient.post('/v1/auth/logout', { refreshToken });
+        await apiClient.post('/auth/logout', { refreshToken });
       }
     } catch (error) {
       // Continue with logout even if server call fails
@@ -146,17 +146,39 @@ class AuthService {
   }
 
   async forgotPassword(email: string): Promise<void> {
-    const response = await apiClient.post('/v1/auth/forgot-password', { email });
+    const response = await apiClient.post('/auth/forgot-password', { email });
     if (!response.data.success) {
       throw new Error(response.data.message || 'Failed to send reset email');
     }
   }
 
   async resetPassword(token: string, password: string): Promise<void> {
-    const response = await apiClient.post('/v1/auth/reset-password', { token, password });
+    const response = await apiClient.post('/auth/reset-password', { token, password });
     if (!response.data.success) {
       throw new Error(response.data.message || 'Failed to reset password');
     }
+  }
+
+  /**
+   * Exchange a Clerk-authenticated user for a MentWel backend JWT pair so the
+   * rest of the app's API calls work seamlessly after social login.
+   */
+  async syncClerkUser(payload: {
+    clerkUserId: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    profileImageUrl?: string;
+  }): Promise<User> {
+    const response = await apiClient.post<AuthResponse>('/auth/clerk-sync', payload);
+    if (!response.data?.success) {
+      throw new Error(response.data?.message || 'Clerk sync failed');
+    }
+    const { user, tokens } = response.data.data;
+    localStorage.setItem('accessToken', tokens.accessToken);
+    localStorage.setItem('refreshToken', tokens.refreshToken);
+    localStorage.setItem('user', JSON.stringify(user));
+    return user;
   }
 }
 

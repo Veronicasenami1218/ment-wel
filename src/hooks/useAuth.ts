@@ -1,80 +1,98 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import authService, { type User, type RegisterData } from '../services/auth.service'
 
-interface AuthState {
+/**
+ * Tiny shared store for auth state. Backed by localStorage so it survives reloads
+ * AND stays in sync across tabs and components without re-reading on every mount.
+ */
+
+type AuthState = {
   user: User | null
   loading: boolean
   error: string | null
 }
 
-export const useAuth = () => {
-  const [authState, setAuthState] = useState<AuthState>({
-    user: null,
-    loading: true,
-    error: null
-  })
+const STORAGE_KEY = 'user'
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const user = await authService.getCurrentUser()
-        setAuthState({
-          user,
-          loading: false,
-          error: null
-        })
-      } catch (error) {
-        setAuthState({
-          user: null,
-          loading: false,
-          error: error instanceof Error ? error.message : 'Authentication failed'
-        })
-      }
+const readUserFromStorage = (): User | null => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    return JSON.parse(raw) as User
+  } catch {
+    return null
+  }
+}
+
+let currentState: AuthState = {
+  user: readUserFromStorage(),
+  // Synchronous read of localStorage means we are NEVER initially loading
+  // — there's no API call required to determine auth status.
+  loading: false,
+  error: null,
+}
+
+const listeners = new Set<() => void>()
+
+const notify = () => {
+  for (const l of listeners) l()
+}
+
+const setState = (partial: Partial<AuthState>) => {
+  currentState = { ...currentState, ...partial }
+  notify()
+}
+
+// Keep store in sync if localStorage changes in another tab
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY) {
+      setState({ user: readUserFromStorage() })
     }
+  })
+}
 
-    checkAuth()
+const subscribe = (cb: () => void) => {
+  listeners.add(cb)
+  return () => listeners.delete(cb)
+}
+const getSnapshot = () => currentState
+
+export const useAuth = () => {
+  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+
+  // Re-hydrate from storage exactly once per mount in case another window logged
+  // in/out between renders. This is cheap (synchronous JSON.parse).
+  useEffect(() => {
+    const fresh = readUserFromStorage()
+    if (fresh !== state.user) {
+      setState({ user: fresh })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const login = async (email: string, password: string) => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }))
-    
+    setState({ loading: true, error: null })
     try {
       const user = await authService.login({ email, password })
-      setAuthState({
-        user,
-        loading: false,
-        error: null
-      })
+      setState({ user, loading: false, error: null })
       return user
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Login failed'
-      setAuthState({
-        user: null,
-        loading: false,
-        error: errorMessage
-      })
+      setState({ user: null, loading: false, error: errorMessage })
       throw error
     }
   }
 
   const register = async (registerData: RegisterData) => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }))
-    
+    setState({ loading: true, error: null })
     try {
       const user = await authService.register(registerData)
-      setAuthState({
-        user,
-        loading: false,
-        error: null
-      })
+      setState({ user, loading: false, error: null })
       return user
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Registration failed'
-      setAuthState({
-        user: null,
-        loading: false,
-        error: errorMessage
-      })
+      setState({ user: null, loading: false, error: errorMessage })
       throw error
     }
   }
@@ -82,23 +100,22 @@ export const useAuth = () => {
   const logout = async () => {
     try {
       await authService.logout()
-      setAuthState({
-        user: null,
-        loading: false,
-        error: null
-      })
-    } catch (error) {
-      console.error('Logout error:', error)
+    } catch (e) {
+      // intentional — still clear local state
+      // eslint-disable-next-line no-console
+      console.warn('Logout error:', e)
+    } finally {
+      setState({ user: null, loading: false, error: null })
     }
   }
 
   return {
-    user: authState.user,
-    loading: authState.loading,
-    error: authState.error,
+    user: state.user,
+    loading: state.loading,
+    error: state.error,
     login,
     register,
     logout,
-    isAuthenticated: !!authState.user
+    isAuthenticated: !!state.user,
   }
 }
