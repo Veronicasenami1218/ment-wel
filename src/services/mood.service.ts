@@ -14,12 +14,12 @@ export interface MoodLog {
 
 class MoodService {
   async saveMood(entry: Omit<MoodEntry, 'id' | 'createdAt'>): Promise<MoodEntry> {
-    const response = await apiClient.post('/v1/mood', entry);
+    const response = await apiClient.post('/mood', entry);
     return response.data.data;
   }
 
   async getMoodLogs(days = 30): Promise<MoodEntry[]> {
-    const response = await apiClient.get(`/v1/mood?days=${days}`);
+    const response = await apiClient.get(`/mood?days=${days}`);
     return response.data.data || [];
   }
 }

@@ -34,8 +34,14 @@ const QUICK_PROMPTS = [
   "Tips for better sleep",
 ]
 
-export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false)
+export default function ChatBot({
+  initialOpen = false,
+  onClose,
+}: {
+  initialOpen?: boolean
+  onClose?: () => void
+} = {}) {
+  const [isOpen, setIsOpen] = useState(initialOpen)
   const [isMinimized, setIsMinimized] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -208,7 +214,10 @@ export default function ChatBot() {
                   <Minimize2 className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setIsOpen(false)
+                    onClose?.()
+                  }}
                   className="p-1.5 hover:bg-white/20 rounded-lg transition-colors text-white"
                   aria-label="Close"
                 >

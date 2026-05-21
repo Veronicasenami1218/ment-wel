@@ -48,7 +48,7 @@ class ChatService {
     
     // Uncomment for production:
     // try {
-    //   const response = await apiClient.get('/v1/chat/sessions')
+    //   const response = await apiClient.get('/chat/sessions')
     //   return response.data.data
     // } catch (error) {
     //   console.error('Failed to fetch chat sessions:', error)
@@ -63,7 +63,7 @@ class ChatService {
     
     // Uncomment for production:
     // try {
-    //   const response = await apiClient.get(`/v1/chat/sessions/${sessionId}/messages`)
+    //   const response = await apiClient.get(`/chat/sessions/${sessionId}/messages`)
     //   return response.data.data
     // } catch (error) {
     //   console.error('Failed to fetch messages:', error)
@@ -74,7 +74,7 @@ class ChatService {
   // Send a message
   async sendMessage(sessionId: string, content: string, type: 'text' | 'image' | 'file' = 'text'): Promise<ChatMessage> {
     try {
-      const response = await apiClient.post(`/v1/chat/sessions/${sessionId}/messages`, {
+      const response = await apiClient.post(`/chat/sessions/${sessionId}/messages`, {
         content,
         type
       })
@@ -89,7 +89,7 @@ class ChatService {
   // Start a new chat session with a counselor
   async startChatSession(counselorId: string): Promise<ChatSession> {
     try {
-      const response = await apiClient.post('/v1/chat/sessions', {
+      const response = await apiClient.post('/chat/sessions', {
         counselorId
       })
       return response.data.data
@@ -103,7 +103,7 @@ class ChatService {
   // End a chat session
   async endChatSession(sessionId: string): Promise<void> {
     try {
-      await apiClient.post(`/v1/chat/sessions/${sessionId}/end`)
+      await apiClient.post(`/chat/sessions/${sessionId}/end`)
     } catch (error) {
       console.error('Failed to end chat session:', error)
     }
@@ -112,7 +112,7 @@ class ChatService {
   // Mark messages as read
   async markAsRead(sessionId: string): Promise<void> {
     try {
-      await apiClient.post(`/v1/chat/sessions/${sessionId}/read`)
+      await apiClient.post(`/chat/sessions/${sessionId}/read`)
     } catch (error) {
       console.error('Failed to mark messages as read:', error)
     }
@@ -125,7 +125,7 @@ class ChatService {
     
     // Uncomment for production:
     // try {
-    //   const response = await apiClient.get('/v1/chat/counselors/available')
+    //   const response = await apiClient.get('/chat/counselors/available')
     //   return response.data.data
     // } catch (error) {
     //   console.error('Failed to fetch available counselors:', error)
