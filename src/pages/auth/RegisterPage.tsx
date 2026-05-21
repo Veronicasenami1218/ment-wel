@@ -65,15 +65,27 @@ export default function RegisterPage() {
       return;
     }
 
+    // Age check (backend enforces ≥18 too, but fail fast here)
+    if (data.dateOfBirth) {
+      const dob = new Date(data.dateOfBirth);
+      const today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      const m = today.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+      if (age < 18) {
+        toast.error('You must be at least 18 years old to sign up.');
+        return;
+      }
+    }
+
     setIsLoading(true);
     try {
       const { terms, ...registerData } = data;
-      
-      // Transform the data to match backend API
+
       const backendData: RegisterData = {
         ...registerData,
         acceptTerms: terms,
-        role: 'user' // Add default role
+        role: 'user',
       };
 
       await registerUser(backendData);
@@ -81,14 +93,16 @@ export default function RegisterPage() {
       navigate(from, { replace: true });
     } catch (error: any) {
       console.error('Registration error:', error);
-      toast.error(error.message || 'Registration failed. Please try again.');
+      // Backend may return multiple validation messages separated by \n
+      const raw: string = error?.message || 'Registration failed. Please try again.';
+      raw.split('\n').forEach(line => toast.error(line));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-16">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-16">
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Register Form */}
@@ -181,10 +195,15 @@ export default function RegisterPage() {
                 <input
                   type="tel"
                   id="phoneNumber"
-                  {...register('phoneNumber')}
+                  {...register('phoneNumber', {
+                    validate: (v) =>
+                      !v || /^\+234[789][01]\d{8}$/.test(v) ||
+                      'Use Nigerian format: +234XXXXXXXXXX (14 chars)',
+                  })}
                   className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
-                  placeholder="+234 XXX XXX XXXX"
+                  placeholder="+2348012345678"
                 />
+                {errors.phoneNumber && <p className="mt-1 text-xs text-red-500">⚠ {errors.phoneNumber.message}</p>}
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -213,9 +232,28 @@ export default function RegisterPage() {
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
+                    <option value="prefer_not_to_say">Prefer not to say</option>
                   </select>
                   {errors.gender && <p className="mt-1 text-xs text-red-500">⚠ {errors.gender.message}</p>}
                 </div>
+              </div>
+
+              <div>
+                <label htmlFor="country" className="block text-sm font-medium text-neutral-700 mb-2">
+                  Country (Optional)
+                </label>
+                <select
+                  id="country"
+                  {...register('country')}
+                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                >
+                  <option value="">Select</option>
+                  <option value="Nigeria">Nigeria</option>
+                  <option value="Ghana">Ghana</option>
+                  <option value="Kenya">Kenya</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
 
               <div>
@@ -226,7 +264,16 @@ export default function RegisterPage() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     id="password"
-                    {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' } })}
+                    {...register('password', {
+                      required: 'Password is required',
+                      minLength: { value: 8, message: 'Password must be at least 8 characters' },
+                      validate: {
+                        upper: (v) => /[A-Z]/.test(v) || 'Must include an uppercase letter',
+                        lower: (v) => /[a-z]/.test(v) || 'Must include a lowercase letter',
+                        digit: (v) => /\d/.test(v) || 'Must include a number',
+                        special: (v) => /[^A-Za-z0-9]/.test(v) || 'Must include a special character',
+                      },
+                    })}
                     onChange={onPasswordChange}
                     className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
                     placeholder="Create a strong password"

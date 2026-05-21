@@ -28,7 +28,7 @@ export default function LandingPage() {
 
       <div className="min-h-screen">
         {/* Hero Section - Vibrant and Eye-catching */}
-        <section className="relative pt-32 pb-20 px-4 overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400">
+        <section className="relative pt-32 pb-20 px-4 overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 dark:from-purple-900 dark:via-fuchsia-900 dark:to-orange-900">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptMC0xMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
           
           <div className="container mx-auto max-w-6xl relative z-10">
@@ -96,7 +96,7 @@ export default function LandingPage() {
         </section>
 
         {/* How It Works - Colorful Steps */}
-        <section className="py-20 px-4 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <section className="py-20 px-4 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-900">
           <div className="container mx-auto max-w-6xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -108,7 +108,7 @@ export default function LandingPage() {
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
                 How MentWel Works
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 dark:text-neutral-300 max-w-2xl mx-auto">
                 Your path to mental wellness is just three simple steps away
               </p>
             </motion.div>
@@ -156,8 +156,8 @@ export default function LandingPage() {
                     <div className={`text-6xl font-bold bg-gradient-to-br ${item.gradient} bg-clip-text text-transparent mb-4 opacity-30`}>
                       {item.step}
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-3">{item.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-neutral-900 mb-3">{item.title}</h3>
+                    <p className="text-gray-600 dark:text-neutral-700 leading-relaxed">{item.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -166,7 +166,7 @@ export default function LandingPage() {
         </section>
 
         {/* Inspirational Cards - Replacing Pricing */}
-        <section className="py-20 px-4 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 min-h-screen">
+        <section className="py-20 px-4 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900 min-h-screen">
           <div className="container mx-auto max-w-6xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -251,7 +251,7 @@ export default function LandingPage() {
         </section>
 
         {/* Why Choose MentWel - Vibrant Features */}
-        <section className="py-20 px-4 bg-gradient-to-br from-teal-50 via-blue-50 to-indigo-50">
+        <section className="py-20 px-4 bg-gradient-to-br from-teal-50 via-blue-50 to-indigo-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-900">
           <div className="container mx-auto max-w-6xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -263,7 +263,7 @@ export default function LandingPage() {
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-4">
                 Why Choose MentWel?
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 dark:text-neutral-300 max-w-2xl mx-auto">
                 We're committed to making mental health support accessible, secure, and effective
               </p>
             </motion.div>
@@ -301,13 +301,13 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group p-6 bg-white rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-purple-200"
+                  className="group p-6 bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-purple-200 dark:hover:border-purple-700"
                 >
                   <div className={`w-14 h-14 mb-4 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
                     <feature.icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-neutral-100 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 dark:text-neutral-400 leading-relaxed">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -315,7 +315,7 @@ export default function LandingPage() {
         </section>
 
         {/* CTA Section - Bold and Inviting */}
-        <section className="py-20 px-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600">
+        <section className="py-20 px-4 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 dark:from-purple-900 dark:via-pink-900 dark:to-red-900">
           <div className="container mx-auto max-w-4xl text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -351,7 +351,7 @@ export default function LandingPage() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-20 px-4 bg-gradient-to-br from-neutral-50 to-white">
+        <section id="contact" className="py-20 px-4 bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-900 dark:to-neutral-800">
           <div className="container mx-auto max-w-6xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -363,7 +363,7 @@ export default function LandingPage() {
               <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
                 Get in Touch
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 dark:text-neutral-300 max-w-2xl mx-auto">
                 Have a question or need support? We're here for you.
               </p>
             </motion.div>
@@ -389,30 +389,30 @@ export default function LandingPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.08 }}
-                    className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow"
+                    className="flex items-center gap-4 p-4 bg-white dark:bg-neutral-800 rounded-2xl shadow-sm border border-neutral-100 dark:border-neutral-700 hover:shadow-md transition-shadow"
                   >
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow shrink-0`}>
                       <item.icon className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wide">{item.label}</p>
-                      <p className="font-semibold text-neutral-800">{item.value}</p>
+                      <p className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wide">{item.label}</p>
+                      <p className="font-semibold text-neutral-800 dark:text-neutral-100">{item.value}</p>
                     </div>
                   </motion.div>
                 ))}
 
                 {/* Crisis Box */}
-                <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
-                  <h3 className="text-base font-bold text-red-700 mb-2">🆘 Crisis Support</h3>
-                  <p className="text-sm text-red-600 mb-3">If you are in immediate danger, please contact emergency services.</p>
+                <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-2xl p-5">
+                  <h3 className="text-base font-bold text-red-700 dark:text-red-300 mb-2">🆘 Crisis Support</h3>
+                  <p className="text-sm text-red-600 dark:text-red-300 mb-3">If you are in immediate danger, please contact emergency services.</p>
                   <div className="space-y-2">
                     {[
                       { label: 'Nigeria Emergency', number: '112' },
                       { label: 'Suicide Prevention', number: '0800-800-2000' },
                     ].map(line => (
-                      <div key={line.label} className="flex items-center justify-between bg-white rounded-xl px-3 py-2 border border-red-100">
-                        <span className="text-sm text-neutral-600">{line.label}</span>
-                        <span className="text-sm font-bold text-red-600">{line.number}</span>
+                      <div key={line.label} className="flex items-center justify-between bg-white dark:bg-neutral-800 rounded-xl px-3 py-2 border border-red-100 dark:border-red-900">
+                        <span className="text-sm text-neutral-600 dark:text-neutral-300">{line.label}</span>
+                        <span className="text-sm font-bold text-red-600 dark:text-red-300">{line.number}</span>
                       </div>
                     ))}
                   </div>
@@ -448,15 +448,15 @@ function ContactForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-10 text-center"
+        className="bg-white dark:bg-neutral-800 rounded-2xl shadow-sm border border-neutral-100 dark:border-neutral-700 p-10 text-center"
       >
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-green-500" />
         </div>
-        <h3 className="text-xl font-bold text-neutral-900 mb-2">Message Sent!</h3>
-        <p className="text-neutral-500 mb-6">We'll get back to you within 24 hours.</p>
+        <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">Message Sent!</h3>
+        <p className="text-neutral-500 dark:text-neutral-400 mb-6">We'll get back to you within 24 hours.</p>
         <button onClick={() => { setSent(false); setForm({ name: '', email: '', subject: '', message: '' }) }}
-          className="px-6 py-2.5 border-2 border-neutral-200 text-neutral-600 rounded-xl text-sm font-medium hover:bg-neutral-50 transition-all">
+          className="px-6 py-2.5 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 rounded-xl text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-all">
           Send Another
         </button>
       </motion.div>
@@ -470,26 +470,26 @@ function ContactForm() {
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
       onSubmit={handleSubmit}
-      className="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 space-y-4"
+      className="bg-white dark:bg-neutral-800 rounded-2xl shadow-sm border border-neutral-100 dark:border-neutral-700 p-6 space-y-4"
     >
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-1">Full Name</label>
+          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-1">Full Name</label>
           <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required
-            className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm"
+            className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm"
             placeholder="Your name" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-1">Email</label>
+          <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-1">Email</label>
           <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required
-            className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm"
+            className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm"
             placeholder="your@email.com" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-neutral-700 mb-1">Subject</label>
+        <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-1">Subject</label>
         <select value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
-          className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm">
+          className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm">
           <option value="">Select a subject</option>
           <option value="general">General Inquiry</option>
           <option value="support">Technical Support</option>
@@ -499,9 +499,9 @@ function ContactForm() {
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-neutral-700 mb-1">Message</label>
+        <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-1">Message</label>
         <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} required rows={4}
-          className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm resize-none"
+          className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 rounded-xl focus:outline-none focus:border-emerald-500 transition-all text-sm resize-none"
           placeholder="Tell us how we can help..." />
       </div>
       <button type="submit" disabled={loading}
@@ -511,7 +511,7 @@ function ContactForm() {
           : <><Send className="w-4 h-4" /> Send Message</>
         }
       </button>
-      <p className="text-xs text-neutral-400 text-center">
+      <p className="text-xs text-neutral-400 dark:text-neutral-500 text-center">
         Or visit our full <Link to="/contact" className="text-emerald-600 hover:underline font-medium">Contact page</Link> for more options.
       </p>
     </motion.form>

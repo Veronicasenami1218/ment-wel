@@ -12,11 +12,19 @@ export interface RegisterData {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  gender: 'male' | 'female' | 'other';
-  country: string;
+  gender: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  country?: 'Nigeria' | 'Ghana' | 'Kenya' | 'South Africa' | 'Other';
   phoneNumber?: string;
   acceptTerms: boolean;
   role?: string;
+}
+
+/**
+ * Shape of `errors` returned by the backend's express-validator middleware.
+ */
+export interface BackendValidationError {
+  field: string;
+  message: string;
 }
 
 export interface User {
@@ -32,6 +40,7 @@ export interface User {
   dateOfBirth?: string;
   gender?: string;
   country?: string;
+  profilePicture?: string;  // base64 data URL or remote URL
   acceptedTermsAt?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -76,23 +85,45 @@ class AuthService {
 
   async register(data: RegisterData): Promise<User> {
     try {
-      const response = await apiClient.post<AuthResponse>('/auth/register', data);
-      
+      // Backend (express-validator) quirks:
+      //  - `acceptTerms` is checked with .equals('true') so we MUST send the
+      //    string "true", not the boolean true.
+      //  - `phoneNumber` must match the Nigerian regex if present, so we
+      //    strip it entirely when blank.
+      //  - `country` is optional; only send it if the user picked one.
+      const payload: Record<string, unknown> = {
+        ...data,
+        acceptTerms: data.acceptTerms ? 'true' : 'false',
+      };
+      if (!data.phoneNumber || !data.phoneNumber.trim()) delete payload.phoneNumber;
+      if (!data.country) delete payload.country;
+
+      const response = await apiClient.post<AuthResponse>('/auth/register', payload);
+
       if (response.status === 201 && response.data.success) {
         const { user, tokens } = response.data.data;
-        
-        // Store tokens and user data
+
         localStorage.setItem('accessToken', tokens.accessToken);
         localStorage.setItem('refreshToken', tokens.refreshToken);
         localStorage.setItem('user', JSON.stringify(user));
-        
+
         return user;
       } else {
         throw new Error(response.data.message || 'Registration failed');
       }
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Registration failed';
-      throw new Error(message);
+      const data = error.response?.data;
+      // Surface per-field express-validator errors as a readable message so the
+      // UI can show e.g. "Password must contain at least one special character"
+      // instead of the generic "Validation failed".
+      const fieldErrors: BackendValidationError[] | undefined = data?.errors;
+      let message = data?.message || error.message || 'Registration failed';
+      if (Array.isArray(fieldErrors) && fieldErrors.length) {
+        message = fieldErrors.map(e => e.message).join('\n');
+      }
+      const err = new Error(message) as Error & { fieldErrors?: BackendValidationError[] };
+      err.fieldErrors = fieldErrors;
+      throw err;
     }
   }
 
