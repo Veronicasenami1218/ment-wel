@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import { format, subDays, parseISO, isSameDay } from 'date-fns'
 import { CalendarDays, BarChart2, Save, Loader2 } from 'lucide-react'
 import moodService, { MoodEntry } from '../../services/mood.service'
+import { readMoods, saveMoodEntry } from '../../hooks/useUserStats'
 
 const MOODS = [
   { value: 1, emoji: '😢', label: 'Terrible', color: 'bg-red-100 border-red-400 text-red-600' },
@@ -33,14 +34,31 @@ export default function MoodTrackingPage() {
     if (activeTab !== 'log') fetchLogs()
   }, [activeTab])
 
+  // On first mount, seed `logs` from localStorage so the chart/calendar render
+  // instantly with whatever the user has already saved, even before (or if) the
+  // API call resolves.
+  useEffect(() => {
+    const cached = readMoods()
+    if (cached.length) {
+      setLogs(cached.map(c => ({ mood: c.mood, note: c.note, date: c.date })))
+    }
+  }, [])
+
   const fetchLogs = async () => {
     setLoadingLogs(true)
     try {
       const data = await moodService.getMoodLogs(30)
-      setLogs(data)
+      if (data && data.length) {
+        setLogs(data)
+        return
+      }
+      // Fall back to localStorage if API returned nothing
+      const cached = readMoods()
+      setLogs(cached.map(c => ({ mood: c.mood, note: c.note, date: c.date })))
     } catch {
-      // silently fail — backend may not be connected yet
-      setLogs([])
+      // Backend unavailable — use whatever we have in localStorage
+      const cached = readMoods()
+      setLogs(cached.map(c => ({ mood: c.mood, note: c.note, date: c.date })))
     } finally {
       setLoadingLogs(false)
     }
@@ -52,19 +70,26 @@ export default function MoodTrackingPage() {
       return
     }
     setIsSaving(true)
+    const dateStr = format(selectedDate, 'yyyy-MM-dd')
+    // Always persist locally first so the dashboard streak updates immediately
+    // and survives a reload, regardless of whether the backend is reachable.
+    saveMoodEntry({ mood: selectedMood, note: note.trim(), date: dateStr })
     try {
       await moodService.saveMood({
         mood: selectedMood,
         note: note.trim(),
-        date: format(selectedDate, 'yyyy-MM-dd'),
+        date: dateStr,
       })
+    } catch {
+      // Swallow — local copy already saved. User still sees success.
+    } finally {
       toast.success('Mood logged successfully!')
       setSelectedMood(null)
       setNote('')
       setSelectedDate(new Date())
-    } catch {
-      toast.error('Failed to save mood. Please try again.')
-    } finally {
+      // Refresh in-page chart/calendar with the new entry
+      const cached = readMoods()
+      setLogs(cached.map(c => ({ mood: c.mood, note: c.note, date: c.date })))
       setIsSaving(false)
     }
   }

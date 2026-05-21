@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Calendar, Clock, Video, Mic, MessageCircle, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react'
+import { Clock, Video, Mic, MessageCircle, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { saveBookedSession } from '../../hooks/useUserStats'
 
 const SESSION_TYPES = [
   { id: 'text', label: 'Text Chat', icon: MessageCircle, desc: 'Chat via secure messaging', color: 'from-sky-500 to-blue-600' },
@@ -40,6 +41,27 @@ export default function SessionBookingPage() {
   const sessionTypeObj = SESSION_TYPES.find((s) => s.id === sessionType)
 
   const handleBook = () => {
+    if (!therapist || !sessionTypeObj || !duration || !selectedDate || !selectedTime) {
+      toast.error('Please complete all booking fields')
+      return
+    }
+    // Persist so it shows up on the Dashboard and survives a reload.
+    saveBookedSession({
+      id:
+        typeof crypto !== 'undefined' && 'randomUUID' in crypto
+          ? crypto.randomUUID()
+          : `session-${Date.now()}`,
+      therapistId: therapist.id,
+      therapistName: therapist.name,
+      sessionType: sessionTypeObj.id as 'text' | 'voice' | 'video',
+      sessionTypeLabel: sessionTypeObj.label,
+      duration,
+      date: selectedDate,
+      time: selectedTime,
+      notes: notes.trim() || undefined,
+      bookedAt: new Date().toISOString(),
+      status: 'upcoming',
+    })
     setIsBooked(true)
     toast.success('Session booked successfully!')
   }

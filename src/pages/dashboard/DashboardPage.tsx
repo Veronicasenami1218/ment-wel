@@ -5,8 +5,9 @@ import { useAuth as useClerkAuth, useUser } from '@clerk/clerk-react'
 import {
   BarChart3, BookOpen, MessageCircle, Heart,
   TrendingUp, Lightbulb, Calendar, ArrowRight,
-  Smile, Brain, Users, Sparkles
+  Smile, Brain, Users, Sparkles, CheckCircle, Bookmark
 } from 'lucide-react'
+import { useUserStats, useRecentActivity, type ActivityItem } from '../../hooks/useUserStats'
 
 const WELLNESS_TIPS = [
   'Take 5 deep breaths when you feel overwhelmed — it activates your parasympathetic nervous system.',
@@ -32,43 +33,58 @@ export default function DashboardPage() {
 
   const firstName = isSignedIn ? clerkUser?.firstName : credentialUser?.firstName
   const avatarLetter = (firstName?.[0] || 'U').toUpperCase()
+  const avatarUrl: string | null =
+    (isSignedIn ? (clerkUser as any)?.imageUrl : credentialUser?.profilePicture) || null
+
+  // Live stats — re-render on any same-tab or cross-tab change.
+  const {
+    moodStreak,
+    totalMoodLogs,
+    bookmarksCount,
+    sessionsCount,
+    upcomingSessions,
+    lastAssessment,
+  } = useUserStats()
+  const recentActivity = useRecentActivity(6)
 
   const stats = [
     {
       label: 'Last Assessment',
-      value: 'N/A',
-      sub: 'No assessments yet',
+      value: lastAssessment ? `${lastAssessment.score}/${lastAssessment.maxScore}` : 'N/A',
+      sub: lastAssessment ? `${lastAssessment.assessmentTitle} • ${capitalize(lastAssessment.severity)}` : 'No assessments yet',
       icon: Brain,
       gradient: 'from-sky-400 to-blue-500',
-      bg: 'bg-sky-50',
-      text: 'text-sky-600',
+      bg: 'bg-sky-50 dark:bg-sky-900/20',
+      text: 'text-sky-600 dark:text-sky-300',
     },
     {
       label: 'Mood Streak',
-      value: '0 days',
-      sub: 'Start logging today',
+      value: `${moodStreak} day${moodStreak === 1 ? '' : 's'}`,
+      sub: totalMoodLogs > 0 ? `${totalMoodLogs} total log${totalMoodLogs === 1 ? '' : 's'}` : 'Start logging today',
       icon: TrendingUp,
       gradient: 'from-pink-400 to-rose-500',
-      bg: 'bg-pink-50',
-      text: 'text-pink-600',
+      bg: 'bg-pink-50 dark:bg-pink-900/20',
+      text: 'text-pink-600 dark:text-pink-300',
     },
     {
       label: 'Saved Resources',
-      value: '0',
-      sub: 'Browse the library',
+      value: `${bookmarksCount}`,
+      sub: bookmarksCount > 0 ? 'View your bookmarks' : 'Browse the library',
       icon: BookOpen,
       gradient: 'from-purple-400 to-fuchsia-500',
-      bg: 'bg-purple-50',
-      text: 'text-purple-600',
+      bg: 'bg-purple-50 dark:bg-purple-900/20',
+      text: 'text-purple-600 dark:text-purple-300',
     },
     {
       label: 'Sessions Booked',
-      value: '0',
-      sub: 'Book your first session',
+      value: `${sessionsCount}`,
+      sub: upcomingSessions.length > 0
+        ? `${upcomingSessions.length} upcoming`
+        : sessionsCount > 0 ? 'Book another' : 'Book your first session',
       icon: Calendar,
       gradient: 'from-emerald-400 to-teal-500',
-      bg: 'bg-emerald-50',
-      text: 'text-emerald-600',
+      bg: 'bg-emerald-50 dark:bg-emerald-900/20',
+      text: 'text-emerald-600 dark:text-emerald-300',
     },
   ]
 
@@ -126,9 +142,13 @@ export default function DashboardPage() {
 
           <div className="relative z-10 flex items-center justify-between flex-wrap gap-6">
             <div className="flex items-center gap-5">
-              {/* Avatar */}
-              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center text-2xl font-bold shadow-lg">
-                {avatarLetter}
+              {/* Avatar — shows uploaded picture or initial */}
+              <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white/20 backdrop-blur-sm border-2 border-white/30 shadow-lg flex items-center justify-center">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt={firstName || 'You'} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-2xl font-bold">{avatarLetter}</span>
+                )}
               </div>
               <div>
                 <p className="text-white/70 text-sm font-medium mb-0.5">Good {getTimeOfDay()},</p>
@@ -257,27 +277,70 @@ export default function DashboardPage() {
             className="bg-white dark:bg-neutral-800 rounded-2xl p-6 shadow-sm border border-neutral-100 dark:border-neutral-700"
           >
             <h2 className="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-4">Recent Activity</h2>
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-fuchsia-100 dark:from-violet-900/30 dark:to-fuchsia-900/30 rounded-2xl flex items-center justify-center mb-4">
-                <Sparkles className="w-7 h-7 text-violet-400 dark:text-violet-300" />
+            {recentActivity.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-fuchsia-100 dark:from-violet-900/30 dark:to-fuchsia-900/30 rounded-2xl flex items-center justify-center mb-4">
+                  <Sparkles className="w-7 h-7 text-violet-400 dark:text-violet-300" />
+                </div>
+                <p className="font-semibold text-neutral-700 dark:text-neutral-200">Your journey starts here</p>
+                <p className="text-sm text-neutral-400 dark:text-neutral-500 mt-1 max-w-xs">
+                  Complete an assessment or log your mood to see your activity here.
+                </p>
+                <Link
+                  to="/mood"
+                  className="mt-4 px-5 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-sm font-medium rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all"
+                >
+                  Log Your First Mood
+                </Link>
               </div>
-              <p className="font-semibold text-neutral-700 dark:text-neutral-200">Your journey starts here</p>
-              <p className="text-sm text-neutral-400 dark:text-neutral-500 mt-1 max-w-xs">
-                Complete an assessment or log your mood to see your activity here.
-              </p>
-              <Link
-                to="/mood"
-                className="mt-4 px-5 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-sm font-medium rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all"
-              >
-                Log Your First Mood
-              </Link>
-            </div>
+            ) : (
+              <ul className="space-y-3">
+                {recentActivity.map(item => (
+                  <ActivityRow key={item.id} item={item} />
+                ))}
+              </ul>
+            )}
           </motion.div>
 
         </div>
       </div>
     </div>
   )
+}
+
+function ActivityRow({ item }: { item: ActivityItem }) {
+  const cfg = ACTIVITY_CONFIG[item.type]
+  const Icon = cfg.icon
+  return (
+    <li>
+      <Link
+        to={cfg.to}
+        className="flex items-start gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition-colors group"
+      >
+        <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${cfg.gradient} flex items-center justify-center shrink-0 shadow-sm`}>
+          <Icon className="w-5 h-5 text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-100 truncate">{item.title}</p>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{item.subtitle}</p>
+        </div>
+        {item.relative && (
+          <span className="text-xs text-neutral-400 dark:text-neutral-500 shrink-0 mt-1">{item.relative}</span>
+        )}
+      </Link>
+    </li>
+  )
+}
+
+const ACTIVITY_CONFIG: Record<ActivityItem['type'], { icon: any; gradient: string; to: string }> = {
+  mood:       { icon: Heart,       gradient: 'from-pink-500 to-rose-600',    to: '/mood' },
+  assessment: { icon: CheckCircle, gradient: 'from-sky-500 to-blue-600',     to: '/assessments/history' },
+  session:    { icon: Calendar,    gradient: 'from-emerald-500 to-teal-600', to: '/sessions' },
+  bookmark:   { icon: Bookmark,    gradient: 'from-purple-500 to-fuchsia-600', to: '/bookmarks' },
+}
+
+function capitalize(s: string) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s
 }
 
 function getTimeOfDay() {
