@@ -54,13 +54,22 @@ apiClient.interceptors.response.use(
         const response = await apiClient.post('/auth/refresh-token', { refreshToken });
 
         if (response.status === 200 && response.data?.success) {
-          // Backend returns { data: { accessToken, expiresIn } }
-          const newAccessToken =
+          // Backend returns { data: { accessToken, refreshToken, expiresIn } }.
+          // (Older shape `data.tokens.access.token` is no longer produced but
+          // we keep a fallback just in case.)
+          const newAccessToken: string | undefined =
             response.data.data?.accessToken ||
             response.data.data?.tokens?.access?.token;
+          const newRefreshToken: string | undefined =
+            response.data.data?.refreshToken ||
+            response.data.data?.tokens?.refresh?.token;
+
           if (!newAccessToken) throw new Error('No access token in refresh response');
 
           localStorage.setItem('accessToken', newAccessToken);
+          if (newRefreshToken) {
+            localStorage.setItem('refreshToken', newRefreshToken);
+          }
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return apiClient(originalRequest);
         }
