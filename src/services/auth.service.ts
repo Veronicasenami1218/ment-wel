@@ -40,7 +40,7 @@ export interface User {
   dateOfBirth?: string;
   gender?: string;
   country?: string;
-  profilePicture?: string;  // base64 data URL or remote URL
+  profilePicture?: string;
   acceptedTermsAt?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -155,6 +155,25 @@ class AuthService {
     
     try {
       return JSON.parse(userStr);
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Fetch a fresh copy of the authenticated user's profile from the server
+   * and update the cached copy in localStorage. Returns null if the request
+   * fails (e.g. token expired and refresh also failed).
+   */
+  async fetchMe(): Promise<User | null> {
+    try {
+      const response = await apiClient.get('/users/me');
+      const user: User | undefined = response.data?.data?.user;
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        return user;
+      }
+      return null;
     } catch {
       return null;
     }

@@ -58,6 +58,10 @@ const subscribe = (cb: () => void) => {
 }
 const getSnapshot = () => currentState
 
+// Module-level guard: we only refresh the user from the server once per
+// page-load, regardless of how many components call useAuth().
+let didFetchMeRef = false
+
 export const useAuth = () => {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
@@ -69,6 +73,19 @@ export const useAuth = () => {
       setState({ user: fresh })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Once per app session, if we have an access token, refresh the user object
+  // from the server so we pick up changes (role, profile picture, etc.) that
+  // happened on other devices. Runs only when we have a token AND haven't
+  // refreshed yet this page-load.
+  useEffect(() => {
+    if (didFetchMeRef) return
+    if (!localStorage.getItem('accessToken')) return
+    didFetchMeRef = true
+    authService.fetchMe().then((freshUser) => {
+      if (freshUser) setState({ user: freshUser })
+    })
   }, [])
 
   const login = async (email: string, password: string) => {
@@ -105,6 +122,7 @@ export const useAuth = () => {
       // eslint-disable-next-line no-console
       console.warn('Logout error:', e)
     } finally {
+      didFetchMeRef = false
       setState({ user: null, loading: false, error: null })
     }
   }
