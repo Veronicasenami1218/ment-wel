@@ -17,7 +17,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-neutral-400 dark:text-neutral-500 mb-6 leading-relaxed max-w-sm">
-              Making mental health support accessible, secure, and effective for students in LASU.
+              Making mental health support accessible, secure, and effective for all students in LASU.
             </p>
             <div className="flex gap-4">
               <a
