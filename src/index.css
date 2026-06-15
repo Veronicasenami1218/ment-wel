@@ -13,7 +13,7 @@
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
-  .dark body {
+  html.dark body {
     @apply bg-neutral-900 text-neutral-100;
   }
 
