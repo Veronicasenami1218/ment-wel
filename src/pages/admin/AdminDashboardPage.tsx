@@ -1,14 +1,16 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Users, MessageCircle, BarChart3, BookOpen, TrendingUp, TrendingDown, Activity } from 'lucide-react'
+import apiClient from '../../config/api'
 
-const stats = [
+const MOCK_STATS = [
   { label: 'Total Users', value: '1,284', change: '+12%', up: true, icon: Users, color: 'from-sky-500 to-blue-600', bg: 'bg-sky-50', text: 'text-sky-600' },
   { label: 'Active Sessions', value: '47', change: '+8%', up: true, icon: MessageCircle, color: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-50', text: 'text-emerald-600' },
   { label: 'Assessments Taken', value: '3,891', change: '+23%', up: true, icon: BarChart3, color: 'from-purple-500 to-fuchsia-600', bg: 'bg-purple-50', text: 'text-purple-600' },
   { label: 'Resource Views', value: '18,420', change: '-3%', up: false, icon: BookOpen, color: 'from-amber-500 to-orange-500', bg: 'bg-amber-50', text: 'text-amber-600' },
 ]
 
-const recentUsers = [
+const MOCK_USERS = [
   { name: 'Amara Osei', email: 'amara@example.com', role: 'User', status: 'Active', joined: '2 hours ago' },
   { name: 'Chidi Nwosu', email: 'chidi@example.com', role: 'User', status: 'Active', joined: '5 hours ago' },
   { name: 'Fatima Hassan', email: 'fatima@example.com', role: 'Counselor', status: 'Active', joined: '1 day ago' },
@@ -16,17 +18,8 @@ const recentUsers = [
   { name: 'Ngozi Eze', email: 'ngozi@example.com', role: 'User', status: 'Active', joined: '3 days ago' },
 ]
 
-// Simple bar chart data (last 7 days user signups)
-const chartData = [
-  { day: 'Mon', value: 12 },
-  { day: 'Tue', value: 19 },
-  { day: 'Wed', value: 8 },
-  { day: 'Thu', value: 24 },
-  { day: 'Fri', value: 31 },
-  { day: 'Sat', value: 17 },
-  { day: 'Sun', value: 22 },
-]
-const maxValue = Math.max(...chartData.map(d => d.value))
+const MOCK_CHART = [12, 19, 8, 24, 31, 17, 22]
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 16 },
@@ -35,11 +28,53 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function AdminDashboardPage() {
+  const [stats, setStats] = useState(MOCK_STATS)
+  const [recentUsers, setRecentUsers] = useState(MOCK_USERS)
+  const [chartData, setChartData] = useState(MOCK_CHART)
+  const [usingMock, setUsingMock] = useState(false)
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const [statsRes, usersRes] = await Promise.all([
+          apiClient.get('/v1/admin/stats'),
+          apiClient.get('/v1/admin/users/recent'),
+        ])
+        if (statsRes.data?.data) {
+          const s = statsRes.data.data
+          setStats([
+            { ...MOCK_STATS[0], value: s.totalUsers?.toLocaleString() || MOCK_STATS[0].value },
+            { ...MOCK_STATS[1], value: s.activeSessions?.toLocaleString() || MOCK_STATS[1].value },
+            { ...MOCK_STATS[2], value: s.totalAssessments?.toLocaleString() || MOCK_STATS[2].value },
+            { ...MOCK_STATS[3], value: s.resourceViews?.toLocaleString() || MOCK_STATS[3].value },
+          ])
+        }
+        if (usersRes.data?.data) {
+          setRecentUsers(usersRes.data.data.slice(0, 5).map((u: any) => ({
+            name: `${u.firstName} ${u.lastName}`,
+            email: u.email,
+            role: u.role === 'counselor' ? 'Counselor' : 'User',
+            status: u.status === 'active' ? 'Active' : 'Inactive',
+            joined: new Date(u.createdAt).toLocaleDateString(),
+          })))
+        }
+      } catch {
+        // Backend unavailable — keep mock data
+        setUsingMock(true)
+      }
+    }
+    fetchDashboard()
+  }, [])
+
+  const maxValue = Math.max(...chartData)
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-neutral-900">Overview</h1>
-        <p className="text-neutral-500 text-sm mt-1">Welcome back. Here's what's happening on MentWel.</p>
+        <p className="text-neutral-500 text-sm mt-1">
+          Welcome back. Here's what's happening on MentWel.
+          {usingMock && <span className="ml-2 text-xs text-amber-500">(showing demo data — backend offline)</span>}
+        </p>
       </div>
 
       {/* Stats */}
@@ -66,16 +101,16 @@ export default function AdminDashboardPage() {
           <h2 className="text-lg font-bold text-neutral-800 mb-1">New Users</h2>
           <p className="text-sm text-neutral-400 mb-6">Daily signups — last 7 days</p>
           <div className="flex items-end gap-3 h-32">
-            {chartData.map((d) => (
-              <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-                <span className="text-xs font-semibold text-neutral-600">{d.value}</span>
+            {chartData.map((value, i) => (
+              <div key={DAYS[i]} className="flex-1 flex flex-col items-center gap-1">
+                <span className="text-xs font-semibold text-neutral-600">{value}</span>
                 <motion.div
                   initial={{ height: 0 }}
-                  animate={{ height: `${(d.value / maxValue) * 100}%` }}
+                  animate={{ height: `${(value / maxValue) * 100}%` }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                   className="w-full bg-gradient-to-t from-violet-600 to-fuchsia-500 rounded-t-lg min-h-[4px]"
                 />
-                <span className="text-xs text-neutral-400">{d.day}</span>
+                <span className="text-xs text-neutral-400">{DAYS[i]}</span>
               </div>
             ))}
           </div>

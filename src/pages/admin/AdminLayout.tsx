@@ -34,14 +34,16 @@ export default function AdminLayout() {
       )}>
         {/* Logo */}
         <div className="flex items-center gap-3 px-6 py-5 border-b border-neutral-800">
-          <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center">
-            <Heart className="w-4 h-4 text-white" />
-          </div>
-          <div>
-            <p className="font-bold text-white">MentWel</p>
-            <p className="text-xs text-neutral-400">Admin Panel</p>
-          </div>
-          <button onClick={() => setSidebarOpen(false)} className="ml-auto lg:hidden text-neutral-400 hover:text-white">
+          <Link to="/" className="flex items-center gap-3 flex-1">
+            <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center">
+              <Heart className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="font-bold text-white">MentWel</p>
+              <p className="text-xs text-neutral-400">Admin Panel</p>
+            </div>
+          </Link>
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-neutral-400 hover:text-white">
             <X className="w-5 h-5" />
           </button>
         </div>

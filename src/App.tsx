@@ -38,6 +38,15 @@ const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage')
 const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsersPage'))
 const AdminAnalyticsPage = lazy(() => import('./pages/admin/AdminAnalyticsPage'))
 const AdminPlaceholderPage = lazy(() => import('./pages/admin/AdminPlaceholderPage'))
+const HowItWorksPage = lazy(() => import('./pages/HowItWorksPage'))
+const HelpCenterPage = lazy(() => import('./pages/HelpCenterPage'))
+const CrisisSupportPage = lazy(() => import('./pages/CrisisSupportPage'))
+const FAQPage = lazy(() => import('./pages/FAQPage'))
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'))
+const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'))
+const CookiePolicyPage = lazy(() => import('./pages/CookiePolicyPage'))
+const GDPRPage = lazy(() => import('./pages/GDPRPage'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 const PageFallback = () => (
@@ -82,6 +91,16 @@ function App() {
             <Route path="verify-email/:token" element={<EmailVerificationPage />} />
             <Route path="verify-email" element={<EmailVerificationPage />} />
 
+            {/* Public info pages — no login required */}
+            <Route path="how-it-works" element={<HowItWorksPage />} />
+            <Route path="help" element={<HelpCenterPage />} />
+            <Route path="crisis" element={<CrisisSupportPage />} />
+            <Route path="faq" element={<FAQPage />} />
+            <Route path="privacy" element={<PrivacyPolicyPage />} />
+            <Route path="terms" element={<TermsOfServicePage />} />
+            <Route path="cookies" element={<CookiePolicyPage />} />
+            <Route path="gdpr" element={<GDPRPage />} />
+
             {/* Protected Routes */}
             <Route path="features" element={<ProtectedRoute><FeaturesPage /></ProtectedRoute>} />
             <Route path="about" element={<ProtectedRoute><AboutPage /></ProtectedRoute>} />
@@ -102,6 +121,7 @@ function App() {
             <Route path="bookmarks" element={<ProtectedRoute><BookmarksPage /></ProtectedRoute>} />
             <Route path="chat" element={<ProtectedRoute><ChatDashboardPage /></ProtectedRoute>} />
             <Route path="chat/:sessionId" element={<ProtectedRoute><ChatWindowPage /></ProtectedRoute>} />
+            <Route path="settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           </Route>
 
           {/* 404 */}
