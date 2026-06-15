@@ -8,7 +8,7 @@ const THERAPISTS: Record<string, any> = {
   '3': { name: 'Dr. Fatima Al-Hassan', title: 'Psychiatrist', specializations: ['Depression', 'Addiction', 'Anxiety'], experience: 12, rating: 4.9, reviews: 210, available: false, initials: 'FA', color: 'from-emerald-400 to-teal-500', bio: 'Dr. Fatima Al-Hassan is a board-certified psychiatrist with 12 years of experience treating depression, addiction, and anxiety disorders. She takes a holistic approach combining medication management with psychotherapy.', education: ['MD Psychiatry – Ahmadu Bello University', 'Fellowship in Addiction Medicine – UCH Ibadan'], languages: ['English', 'Hausa', 'Arabic'], sessionTypes: ['Text Chat', 'Video Call'] },
   '4': { name: 'Dr. Tunde Adeyemi', title: 'Behavioral Therapist', specializations: ['Stress', 'Anxiety', 'Trauma'], experience: 5, rating: 4.7, reviews: 76, available: true, initials: 'TA', color: 'from-pink-400 to-rose-500', bio: 'Dr. Tunde Adeyemi is a behavioral therapist focused on helping clients overcome stress, anxiety, and trauma through evidence-based behavioral interventions and exposure therapy.', education: ['MSc Behavioral Psychology – University of Lagos', 'BSc Psychology – Obafemi Awolowo University'], languages: ['English', 'Yoruba'], sessionTypes: ['Text Chat', 'Voice Call', 'Video Call'] },
   '5': { name: 'Dr. Ngozi Eze', title: 'Family Therapist', specializations: ['Relationships', 'Grief', 'Depression'], experience: 9, rating: 4.8, reviews: 143, available: true, initials: 'NE', color: 'from-amber-400 to-orange-500', bio: 'Dr. Ngozi Eze is a family therapist with 9 years of experience helping families and couples navigate relationship challenges, grief, and depression. She uses systemic and narrative therapy approaches.', education: ['MSc Family Therapy – University of Benin', 'BSc Psychology – Delta State University'], languages: ['English', 'Igbo', 'Urhobo'], sessionTypes: ['Text Chat', 'Video Call'] },
-  '6': { name: 'Dr. Kwame Asante', title: 'Trauma Specialist', specializations: ['Trauma', 'Anxiety', 'Stress'], experience: 11, rating: 5.0, reviews: 189, available: false, initials: 'KA', color: 'from-violet-400 to-indigo-500', bio: 'Dr. Kwame Asante is a trauma specialist with 11 years of experience using EMDR and somatic therapies to help clients heal from complex trauma, PTSD, and chronic stress.', education: ['PhD Trauma Psychology – University of Cape Town', 'MSc Clinical Psychology – University of Ghana'], languages: ['English', 'Twi', 'French'], sessionTypes: ['Text Chat', 'Voice Call', 'Video Call'] },
+  '6': { name: 'Dr. Tahir', title: 'Counselling Psychologist', specializations: ['Anxiety', 'Stress', 'Relationships'], experience: 7, rating: 4.8, reviews: 112, available: true, initials: 'DT', color: 'from-violet-400 to-indigo-500', bio: 'Dr. Tahir is a licensed counselling psychologist with 7 years of experience helping individuals manage anxiety, stress, and relationship challenges. He takes a person-centred approach, creating a safe and non-judgmental space where clients can explore their thoughts and feelings freely.', education: ['MSc Counselling Psychology – University of Lagos', 'BSc Psychology – Lagos State University'], languages: ['English', 'Yoruba'], sessionTypes: ['Text Chat', 'Voice Call', 'Video Call'] },
 }
 
 export default function TherapistDetailPage() {
@@ -139,12 +139,16 @@ export default function TherapistDetailPage() {
                 <Clock className="w-5 h-5 text-sky-500" /> Availability
               </h2>
               <div className="grid grid-cols-2 gap-2">
-                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
-                  <div key={day} className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm ${i < 5 ? 'bg-green-50 text-green-700' : 'bg-neutral-50 text-neutral-400'}`}>
-                    <span className="font-medium">{day}</span>
-                    <span>{i < 5 ? '9am – 5pm' : 'Unavailable'}</span>
-                  </div>
-                ))}
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => {
+                  const isTahir = therapist.name === 'Dr. Tahir'
+                  const isAvailable = isTahir ? i < 4 : i < 5
+                  return (
+                    <div key={day} className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm ${isAvailable ? 'bg-green-50 text-green-700' : 'bg-neutral-50 text-neutral-400'}`}>
+                      <span className="font-medium">{day}</span>
+                      <span>{isAvailable ? '9am – 5pm' : 'Unavailable'}</span>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </motion.div>
