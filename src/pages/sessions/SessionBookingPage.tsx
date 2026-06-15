@@ -97,47 +97,43 @@ export default function SessionBookingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-20 pb-16">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-20 pb-16 transition-colors">
       <div className="container mx-auto px-4 max-w-3xl">
 
-        {/* Header */}
         <div className="text-center py-10">
-          <h1 className="text-3xl font-bold text-neutral-900 mb-2">Book a Session</h1>
-          <p className="text-neutral-500">Schedule a session with one of our licensed therapists.</p>
+          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white mb-2">Book a Session</h1>
+          <p className="text-neutral-500 dark:text-neutral-400">Schedule a session with one of our licensed therapists.</p>
         </div>
 
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-2 mb-10">
           {['Therapist', 'Session Type', 'Date & Time', 'Confirm'].map((label, i) => (
             <div key={label} className="flex items-center gap-2">
-              <div className={`flex items-center gap-1.5 text-xs font-medium ${step > i + 1 ? 'text-green-600' : step === i + 1 ? 'text-sky-600' : 'text-neutral-400'}`}>
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${step > i + 1 ? 'bg-green-100 text-green-600' : step === i + 1 ? 'bg-sky-100 text-sky-600' : 'bg-neutral-100 text-neutral-400'}`}>
+              <div className={`flex items-center gap-1.5 text-xs font-medium ${step > i + 1 ? 'text-green-600' : step === i + 1 ? 'text-sky-600' : 'text-neutral-400 dark:text-neutral-500'}`}>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${step > i + 1 ? 'bg-green-100 text-green-600' : step === i + 1 ? 'bg-sky-100 text-sky-600' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-400'}`}>
                   {step > i + 1 ? '✓' : i + 1}
                 </div>
                 <span className="hidden sm:block">{label}</span>
               </div>
-              {i < 3 && <div className={`w-8 h-0.5 ${step > i + 1 ? 'bg-green-300' : 'bg-neutral-200'}`} />}
+              {i < 3 && <div className={`w-8 h-0.5 ${step > i + 1 ? 'bg-green-300' : 'bg-neutral-200 dark:bg-neutral-700'}`} />}
             </div>
           ))}
         </div>
 
-        <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100">
+        <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="bg-white dark:bg-neutral-800 rounded-2xl p-6 shadow-sm border border-neutral-100 dark:border-neutral-700">
 
           {/* Step 1: Choose Therapist */}
           {step === 1 && (
             <div>
-              <h2 className="text-lg font-bold text-neutral-800 mb-4">Choose a Therapist</h2>
+              <h2 className="text-lg font-bold text-neutral-800 dark:text-white mb-4">Choose a Therapist</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {THERAPISTS.map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => setSelectedTherapist(t.id)}
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${selectedTherapist === t.id ? 'border-sky-500 bg-sky-50' : 'border-neutral-200 hover:border-neutral-300'}`}
-                  >
+                  <button key={t.id} onClick={() => setSelectedTherapist(t.id)}
+                    className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${selectedTherapist === t.id ? 'border-sky-500 bg-sky-50 dark:bg-sky-900/20' : 'border-neutral-200 dark:border-neutral-600 hover:border-neutral-300'}`}>
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${t.color} flex items-center justify-center text-white font-bold text-sm shrink-0`}>{t.initials}</div>
                     <div>
-                      <p className="font-semibold text-sm text-neutral-800">{t.name}</p>
-                      <p className="text-xs text-neutral-500">{t.title}</p>
+                      <p className="font-semibold text-sm text-neutral-800 dark:text-white">{t.name}</p>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400">{t.title}</p>
                     </div>
                     {selectedTherapist === t.id && <CheckCircle className="w-4 h-4 text-sky-500 ml-auto shrink-0" />}
                   </button>

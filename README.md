@@ -1,195 +1,176 @@
-# 🌟 MentWel - Mental Health Platform
+# MentWel — Mental Health Support Platform
 
-A beautiful, modern mental health platform built with React, TypeScript, and Tailwind CSS. Connect with licensed therapists across Nigeria for anonymous, secure, and flexible therapy sessions.
+MentWel is a web-based mental health support system built as a Final Year Project. It connects users with licensed therapists, provides evidence-based self-assessments, a curated resource library, mood tracking tools, and an AI wellness companion — all in one secure, responsive platform.
 
-## 🌐 Live Demo
+---
 
-- **Frontend:** 
-- **Backend API:** 
-- **API Documentation:** 
+## Live Demo
 
-## ✨ Features
+- **Frontend:** *(deploy URL here)*
+- **Backend API:** https://plp-final-project-backend.onrender.com
 
-- **Beautiful UI** - Vibrant gradients and inspirational design
-- **100% Anonymous** - Complete privacy and confidentiality
-- **Licensed Therapists** - Verified mental health professionals
-- **Nigeria-focused** - Tailored for the Nigerian mental health landscape
-- **Responsive Design** - Works perfectly on all devices
-- **Modern Tech Stack** - React 18, TypeScript, Tailwind CSS
+---
 
-## Prerequisites
-- Node.js 18+ and npm 9+
-- Recommended: Git
+## Features
+
+- **Authentication** — Email/password login, Google OAuth (Clerk), forgot/reset password
+- **Self-Assessments** — PHQ-9, GAD-7, and Perceived Stress Scale with scored results
+- **Resource Library** — Articles and guides with category filters, search, and bookmarks
+- **Mood Tracking** — Daily emoji-based mood logs, 7-day chart, and calendar view
+- **AI Chatbot (Welly)** — Mental wellness companion powered by OpenRouter (Llama 3.3)
+- **Therapist Directory** — Browse licensed therapists and book sessions
+- **Session Booking** — 4-step wizard to schedule text, voice, or video sessions
+- **User Dashboard** — Personalised welcome, quick stats, and action shortcuts
+- **Admin Dashboard** — User management, analytics, and platform overview
+- **Dark/Light Mode** — System-aware with manual toggle, persisted in localStorage
+- **Responsive Design** — Mobile, tablet, and desktop layouts
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | React 18 + TypeScript |
+| Build Tool | Vite 4 |
+| Styling | Tailwind CSS |
+| Animations | Framer Motion |
+| Routing | React Router v6 |
+| Forms | React Hook Form |
+| Auth | Clerk (OAuth) + custom JWT |
+| State | Zustand + React Query |
+| HTTP | Axios |
+| AI Chat | OpenRouter API |
+| Testing | Vitest + Playwright |
+
+---
 
 ## Getting Started
-1. Install dependencies (pick one):
-   - Normal install:
-     ```powershell
-     npm install
-     ```
-   - If you hit ERESOLVE / vite@undefined:
-     ```powershell
-     npm install --legacy-peer-deps
-     ```
-2. Start the dev server:
-   ```powershell
-   npm run dev
-   ```
-3. Open the URL printed in the terminal (usually http://localhost:5173).
 
-## Scripts
-- `npm run dev` – Start Vite dev server
-- `npm run build` – Type-check and build for production
-- `npm run preview` – Preview the production build locally
-- `npm run test` – Run unit tests (Vitest)
-- `npm run test:ui` – Run Vitest in UI mode
-- `npm run test:e2e` – Run Playwright end-to-end tests
-- `npm run lint` – Lint TypeScript/React code
-- `npm run lint:fix` – Lint and auto-fix
+### Prerequisites
+- Node.js 18+
+- npm 9+
 
-## 🔧 Environment Variables
+### Installation
 
-1. Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
+```bash
+# 1. Navigate to the frontend folder
+cd frontend
 
-2. Update the variables:
-   ```env
-   # API Configuration
-   VITE_API_URL=
-   VITE_BACKEND_URL=
-   
-   # App Configuration
-   VITE_APP_NAME=MentWel
-   VITE_APP_URL=
-   
-   # Feature Flags
-   VITE_ENABLE_ANALYTICS=true
-   VITE_ENABLE_CHAT=true
-   ```
+# 2. Install dependencies
+npm install
 
-3. Restart the dev server after changes.
+# 3. Copy the environment file
+cp .env.example .env
 
-## 🛠️ Tech Stack
+# 4. Add your keys to .env (see Environment Variables below)
 
-### Frontend
-- **React 18** - Modern React with hooks and concurrent features
-- **TypeScript** - Type-safe development
-- **Vite 4** - Lightning-fast build tool
-- **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Smooth animations and transitions
-- **React Router** - Client-side routing
-- **React Query** - Server state management
-- **Zustand** - Lightweight state management
-- **Axios** - HTTP client for API calls
+# 5. Start the development server
+npm run dev
+```
 
-### Backend Integration
-- **Backend URL:** 
-- **API Endpoints:** RESTful API for therapists, sessions, and user management
+The app runs at **http://localhost:3000** by default.
 
-### Development Tools
-- **Vitest** - Unit testing framework
-- **Playwright** - End-to-end testing
-- **ESLint** - Code linting and formatting
-- **Netlify** - Deployment and hosting
+---
 
-## 📁 Project Structure
+## Environment Variables
+
+Create a `.env` file in the `frontend/` folder with the following:
+
+```env
+# Backend API
+VITE_API_URL=https://plp-final-project-backend.onrender.com/api
+VITE_BACKEND_URL=https://plp-final-project-backend.onrender.com
+
+# Clerk Authentication
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+
+# OpenRouter (AI Chatbot)
+VITE_OPENROUTER_API_KEY=your_openrouter_api_key
+
+# App
+VITE_APP_NAME=MentWel
+VITE_APP_URL=http://localhost:3000
+```
+
+---
+
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run test` | Run unit tests (Vitest) |
+| `npm run test:e2e` | Run end-to-end tests (Playwright) |
+| `npm run lint` | Lint TypeScript/React code |
+| `npm run lint:fix` | Lint and auto-fix issues |
+| `npm run type-check` | TypeScript type checking only |
+
+---
+
+## Project Structure
 
 ```
 frontend/
 ├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── Header.tsx
-│   │   └── Footer.tsx
-│   ├── pages/              # Page components
-│   │   ├── LandingPage.tsx
-│   │   ├── auth/           # Authentication pages
-│   │   ├── dashboard/      # User dashboard
-│   │   ├── therapists/     # Therapist directory
-│   │   └── sessions/       # Session booking
-│   ├── services/           # API services
-│   │   ├── auth.service.ts
-│   │   ├── therapist.service.ts
-│   │   └── session.service.ts
-│   ├── hooks/              # Custom React hooks
-│   │   └── useAuth.ts
-│   ├── lib/                # Utility functions
-│   │   └── utils.ts
-│   └── config/             # Configuration files
-│       └── api.ts
-├── public/                 # Static assets
-├── index.html             # Entry HTML file
-├── tailwind.config.js     # Tailwind configuration
-├── vite.config.ts         # Vite configuration
-└── vercel.json           # Deployment configuration
+│   ├── components/          # Shared UI components
+│   │   ├── Header.tsx       # Navigation with dark mode toggle
+│   │   ├── Footer.tsx       # Site footer with links
+│   │   ├── Layout.tsx       # Page wrapper
+│   │   └── ChatBot.tsx      # Welly AI chat widget
+│   ├── pages/               # Route-level page components
+│   │   ├── auth/            # Login, register, forgot/reset password
+│   │   ├── dashboard/       # User dashboard
+│   │   ├── assessments/     # Self-assessment flow + results
+│   │   ├── resources/       # Resource library + bookmarks
+│   │   ├── mood/            # Mood tracking + calendar
+│   │   ├── therapists/      # Therapist directory + detail
+│   │   ├── sessions/        # Session booking wizard
+│   │   ├── profile/         # User profile management
+│   │   └── admin/           # Admin panel (login, dashboard, users)
+│   ├── services/            # API service layer
+│   ├── hooks/               # Custom React hooks
+│   ├── data/                # Static fallback data
+│   └── config/              # Axios instance and API config
+├── public/                  # Static assets
+├── index.html
+├── tailwind.config.js
+└── vite.config.ts
 ```
-
-## Docker (optional)
-Build and run with Docker:
-```powershell
-docker build -t mentwel-frontend .
-docker run -p 5173:5173 mentwel-frontend
-```
-If the image exposes a different port, adjust the mapping.
-
-## Troubleshooting
-- **npm ERESOLVE / vite@undefined**
-  - This is usually an npm resolver/cache quirk. Try:
-    ```powershell
-    npm cache clean --force
-    npm install --legacy-peer-deps
-    ```
-  - Or pin compatible versions explicitly:
-    ```powershell
-    npm install -D vite@4.5.0 @vitejs/plugin-react@4.7.0
-    npm install
-    ```
-- **Node version**
-  - Ensure Node 18+ (`node -v`).
-- **Port already in use**
-  - Change the dev server port in `vite.config.ts` or stop the conflicting process.
-
-## Build & Preview
-```powershell
-npm run build
-npm run preview
-```
-
-## 🚀 Deployment
-
-The application is deployed on **Netlify** with automatic deployments from the main branch.
-
-- **Live URL:** 
-- **Backend API:** 
-
-### Deploy Your Own
-
-1. **Fork this repository**
-2. **Connect to Netlify:**
-   - Go to [netlify.com](https://netlify.com)
-   - Click "New site from Git"
-   - Select your forked repository
-   - Set build command: `npm run build`
-   - Set publish directory: `dist`
-3. **Add environment variables** in Netlify dashboard
-4. **Deploy!**
-
-## 🤝 Contributing
-
-This is a PLP (Power Learn Project) final project. Contributions are welcome!
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is part of the PLP Final Project. All rights reserved.
 
 ---
 
-**Built with ❤️ for mental health awareness in Nigeria** 🇳🇬
+## Admin Access
 
+Visit `/admin/login` and use the demo credentials:
+
+- **Email:** `admin@mentwel.com`
+- **Password:** `Admin@1234`
+
+---
+
+## Troubleshooting
+
+**Dependencies fail to install**
+```bash
+npm cache clean --force
+npm install --legacy-peer-deps
+```
+
+**Port already in use**
+Change `server.port` in `vite.config.ts` or stop the conflicting process.
+
+**Chatbot not responding**
+Make sure `VITE_OPENROUTER_API_KEY` is set in `.env` and the dev server was restarted after adding the key.
+
+---
+
+## License
+
+This project is developed as a Final Year Project. All rights reserved.
+
+---
+
+*Built with care for mental health awareness* 💚

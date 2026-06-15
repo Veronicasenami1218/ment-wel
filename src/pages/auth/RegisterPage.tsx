@@ -190,15 +190,16 @@ export default function RegisterPage() {
 
               <div>
                 <label htmlFor="phoneNumber" className="block text-sm font-medium text-neutral-700 mb-2">
-                  Phone Number (Optional)
+                  Phone Number
                 </label>
                 <input
                   type="tel"
                   id="phoneNumber"
                   {...register('phoneNumber', {
+                    required: 'Phone number is required',
                     validate: (v) =>
-                      !v || /^\+234[789][01]\d{8}$/.test(v) ||
-                      'Use Nigerian format: +234XXXXXXXXXX (14 chars)',
+                      /^\+234[789][01]\d{8}$/.test(v || '') ||
+                      'Use Nigerian format: +234XXXXXXXXXX',
                   })}
                   className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
                   placeholder="+2348012345678"

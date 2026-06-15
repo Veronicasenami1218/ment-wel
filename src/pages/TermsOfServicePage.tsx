@@ -16,10 +16,9 @@ const SECTIONS = [
 export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-20 transition-colors">
-      <section className="bg-gradient-to-br from-neutral-800 to-neutral-900 py-16 px-4 text-white text-center">
+      <section className="bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600 py-16 px-4 text-white text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl mx-auto">
           <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
-          <p className="text-white/75 text-sm">Last updated: January 2025</p>
         </motion.div>
       </section>
 
