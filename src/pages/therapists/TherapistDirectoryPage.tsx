@@ -11,7 +11,7 @@ const THERAPISTS = [
   { id: '3', name: 'Dr. Fatima Al-Hassan', title: 'Psychiatrist', specializations: ['Depression', 'Addiction', 'Anxiety'], experience: 12, rating: 4.9, reviews: 210, available: false, initials: 'FA', color: 'from-emerald-400 to-teal-500' },
   { id: '4', name: 'Dr. Tunde Adeyemi', title: 'Behavioral Therapist', specializations: ['Stress', 'Anxiety', 'Trauma'], experience: 5, rating: 4.7, reviews: 76, available: true, initials: 'TA', color: 'from-pink-400 to-rose-500' },
   { id: '5', name: 'Dr. Ngozi Eze', title: 'Family Therapist', specializations: ['Relationships', 'Grief', 'Depression'], experience: 9, rating: 4.8, reviews: 143, available: true, initials: 'NE', color: 'from-amber-400 to-orange-500' },
-  { id: '6', name: 'Dr. Kwame Asante', title: 'Trauma Specialist', specializations: ['Trauma', 'Anxiety', 'Stress'], experience: 11, rating: 5.0, reviews: 189, available: false, initials: 'KA', color: 'from-violet-400 to-indigo-500' },
+  { id: '6', name: 'Dr. Tahir', title: 'Counselling Psychologist', specializations: ['Anxiety', 'Stress', 'Relationships'], experience: 7, rating: 4.8, reviews: 112, available: true, initials: 'DT', color: 'from-violet-400 to-indigo-500' },
 ]
 
 export default function TherapistDirectoryPage() {

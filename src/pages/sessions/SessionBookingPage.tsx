@@ -25,6 +25,7 @@ const THERAPISTS = [
   { id: '2', name: 'Dr. Chidi Nwosu', title: 'Counseling Psychologist', initials: 'CN', color: 'from-purple-400 to-fuchsia-500', available: true },
   { id: '4', name: 'Dr. Tunde Adeyemi', title: 'Behavioral Therapist', initials: 'TA', color: 'from-pink-400 to-rose-500', available: true },
   { id: '5', name: 'Dr. Ngozi Eze', title: 'Family Therapist', initials: 'NE', color: 'from-amber-400 to-orange-500', available: true },
+  { id: '6', name: 'Dr. Tahir', title: 'Counselling Psychologist', initials: 'DT', color: 'from-violet-400 to-indigo-500', available: true },
 ]
 
 export default function SessionBookingPage() {
