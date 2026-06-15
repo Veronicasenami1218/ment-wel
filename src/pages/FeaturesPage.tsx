@@ -89,7 +89,7 @@ const features = [
 
 export default function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <div className="min-h-screen bg-white dark:bg-neutral-900 pt-20 transition-colors">
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-sky-600 via-blue-600 to-violet-600 py-20 px-4 text-white text-center">
@@ -111,11 +111,11 @@ export default function FeaturesPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 px-4 bg-neutral-50">
+      <section className="py-20 px-4 bg-neutral-50 dark:bg-neutral-800 transition-colors">
         <div className="max-w-6xl mx-auto">
           <motion.div {...fadeUp()} className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-neutral-900 mb-3">Platform Features</h2>
-            <p className="text-neutral-500 max-w-xl mx-auto">
+            <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-3">Platform Features</h2>
+            <p className="text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto">
               Built with mental health professionals to give you the most effective support possible.
             </p>
           </motion.div>
@@ -125,18 +125,18 @@ export default function FeaturesPage() {
               <motion.div
                 key={f.title}
                 {...fadeUp(i * 0.06)}
-                className={`${f.bg} rounded-2xl p-6 border border-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1`}
+                className={`${f.bg} dark:bg-neutral-700 rounded-2xl p-6 border border-white dark:border-neutral-600 shadow-sm hover:shadow-md transition-all hover:-translate-y-1`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow`}>
                     <f.icon className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-xs font-semibold text-neutral-400 bg-white px-2 py-1 rounded-full border border-neutral-200">
+                  <span className="text-xs font-semibold text-neutral-400 dark:text-neutral-300 bg-white dark:bg-neutral-600 px-2 py-1 rounded-full border border-neutral-200 dark:border-neutral-500">
                     {f.badge}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-neutral-800 mb-2">{f.title}</h3>
-                <p className="text-sm text-neutral-600 leading-relaxed">{f.desc}</p>
+                <h3 className="text-lg font-bold text-neutral-800 dark:text-white mb-2">{f.title}</h3>
+                <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
           </div>
