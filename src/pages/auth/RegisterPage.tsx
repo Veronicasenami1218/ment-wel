@@ -240,24 +240,6 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="country" className="block text-sm font-medium text-neutral-700 mb-2">
-                  Country (Optional)
-                </label>
-                <select
-                  id="country"
-                  {...register('country')}
-                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
-                >
-                  <option value="">Select</option>
-                  <option value="Nigeria">Nigeria</option>
-                  <option value="Ghana">Ghana</option>
-                  <option value="Kenya">Kenya</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div>
                 <label htmlFor="password" className="block text-sm font-medium text-neutral-700 mb-2">
                   Password
                 </label>
