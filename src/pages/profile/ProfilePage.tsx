@@ -10,7 +10,6 @@ interface ProfileFormData {
   firstName: string
   lastName: string
   phoneNumber: string
-  country: string
 }
 
 interface PasswordFormData {
@@ -44,7 +43,6 @@ export default function ProfilePage() {
         firstName: (activeUser as any)?.firstName || (activeUser as any)?.first_name || '',
         lastName: (activeUser as any)?.lastName || (activeUser as any)?.last_name || '',
         phoneNumber: (credentialUser as any)?.phoneNumber || '',
-        country: (credentialUser as any)?.country || '',
       },
     })
 
@@ -116,7 +114,6 @@ export default function ProfilePage() {
       firstName: data.firstName,
       lastName: data.lastName,
       phoneNumber: data.phoneNumber || undefined,
-      country: data.country || undefined,
     })
     try {
       await apiClient.put('/users/profile', data)
@@ -275,18 +272,6 @@ export default function ProfilePage() {
                   placeholder="+234 XXX XXX XXXX"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Country</label>
-                <select
-                  {...regProfile('country')}
-                  className="w-full px-4 py-2.5 border-2 border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 dark:text-neutral-100 rounded-lg focus:outline-none focus:border-sky-500 transition-all"
-                >
-                  <option value="">Select country</option>
-                  {['Nigeria', 'Ghana', 'Kenya', 'South Africa', 'Other'].map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
               <button
                 type="submit"
                 disabled={savingProfile}
@@ -302,7 +287,6 @@ export default function ProfilePage() {
                 { icon: User, label: 'Full Name', value: displayName || 'N/A' },
                 { icon: Mail, label: 'Email', value: email || 'N/A' },
                 { icon: Phone, label: 'Phone', value: credentialUser?.phoneNumber || 'Not set' },
-                { icon: Globe, label: 'Country', value: credentialUser?.country || 'Not set' },
                 { icon: Calendar, label: 'Member Since', value: joinDate },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3 p-3 bg-neutral-50 dark:bg-neutral-700/50 rounded-xl">
