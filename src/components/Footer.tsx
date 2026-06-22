@@ -110,7 +110,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-neutral-800 dark:border-neutral-700 pt-8 text-center space-y-4">
-          <p className="text-neutral-400 dark:text-neutral-500 text-sm">&copy; 2025 MentWel. All rights reserved.</p>
+          <p className="text-neutral-400 dark:text-neutral-500 text-sm">&copy; 2026 MentWel. All rights reserved.</p>
           <p className="text-neutral-500 dark:text-neutral-600 text-sm">
             Mental health support available 24/7. In case of emergency, call 112 (Nigeria) or your local emergency
             services.

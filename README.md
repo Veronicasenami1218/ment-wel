@@ -17,7 +17,7 @@ MentWel is a web-based mental health support system built as a Final Year Projec
 - **Self-Assessments** — PHQ-9, GAD-7, and Perceived Stress Scale with scored results
 - **Resource Library** — Articles and guides with category filters, search, and bookmarks
 - **Mood Tracking** — Daily emoji-based mood logs, 7-day chart, and calendar view
-- **AI Chatbot (Welly)** — Mental wellness companion powered by OpenRouter (Llama 3.3)
+- **AI Chatbot (Welly)** — Mental wellness companion handled by the backend using Groy
 - **Therapist Directory** — Browse licensed therapists and book sessions
 - **Session Booking** — 4-step wizard to schedule text, voice, or video sessions
 - **User Dashboard** — Personalised welcome, quick stats, and action shortcuts
@@ -40,7 +40,7 @@ MentWel is a web-based mental health support system built as a Final Year Projec
 | Auth | Clerk (OAuth) + custom JWT |
 | State | Zustand + React Query |
 | HTTP | Axios |
-| AI Chat | OpenRouter API |
+| AI Chat | Backend (Groy) |
 | Testing | Vitest + Playwright |
 
 ---
@@ -85,8 +85,10 @@ VITE_BACKEND_URL=https://plp-final-project-backend.onrender.com
 # Clerk Authentication
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
-# OpenRouter (AI Chatbot)
-VITE_OPENROUTER_API_KEY=your_openrouter_api_key
+# AI Chat (backend)
+# The frontend does not store provider API keys. Configure the backend with
+# `GROY_API_KEY` in the backend `.env` and the frontend will call the backend
+# AI endpoint at `<VITE_API_URL>/ai/chat`.
 
 # App
 VITE_APP_NAME=MentWel
@@ -163,7 +165,7 @@ npm install --legacy-peer-deps
 Change `server.port` in `vite.config.ts` or stop the conflicting process.
 
 **Chatbot not responding**
-Make sure `VITE_OPENROUTER_API_KEY` is set in `.env` and the dev server was restarted after adding the key.
+Make sure your backend is running and the backend `.env` contains `GROY_API_KEY`. Restart the backend after adding the key.
 
 ---
 

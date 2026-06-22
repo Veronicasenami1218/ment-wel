@@ -2,7 +2,7 @@ import { lazy, Suspense, useState } from 'react'
 import { MessageCircle } from 'lucide-react'
 
 // Lazy-load the heavy ChatBot implementation only after the user opens it.
-// Saves ~150 KB of JS (framer-motion + OpenRouter client code) on every page
+// Saves ~150 KB of JS (framer-motion + AI chat widget code) on every page
 // load including /login and /register.
 const ChatBotImpl = lazy(() => import('./ChatBot'))
 
