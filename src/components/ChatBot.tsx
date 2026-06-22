@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Send, Loader2, Bot, User, Minimize2 } from 'lucide-react'
+import apiClient from '../config/api'
 
 interface Message {
   id: string
@@ -25,7 +26,9 @@ Important rules:
 - Keep responses concise (2-4 sentences) unless the user needs more detail
 - Use a warm, friendly tone — not clinical or robotic`
 
-const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
+// The frontend should call the backend AI endpoint. The backend holds the
+// secret Groy API key and performs requests to the provider.
+// Backend endpoint: POST <API_BASE_URL>/ai/chat
 
 const QUICK_PROMPTS = [
   "I'm feeling anxious today",
@@ -55,7 +58,7 @@ export default function ChatBot({
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY
+  // API key is kept on the backend; frontend must not include provider keys.
 
   useEffect(() => {
     if (isOpen && !isMinimized) {
@@ -92,37 +95,22 @@ export default function ChatBot({
           content: m.text,
         }))
 
-      const response = await fetch(OPENROUTER_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'MentWel Chatbot',
-        },
-        body: JSON.stringify({
-          model: 'google/gemma-3-4b-it:free',
-          messages: [
-            // Gemma doesn't support system role — prepend as first user/assistant exchange
-            { role: 'user', content: SYSTEM_PROMPT },
-            { role: 'assistant', content: 'Understood. I am Welly, a compassionate mental wellness assistant. I am ready to support you.' },
-            ...history,
-            { role: 'user', content: text.trim() },
-          ],
-          max_tokens: 300,
-          temperature: 0.8,
-        }),
+      // Send conversation to backend AI endpoint. Backend should return a
+      // simple reply string in `response.data.reply` (or a few common shapes).
+      const response = await apiClient.post('/ai/chat', {
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...history,
+          { role: 'user', content: text.trim() },
+        ],
+        // Optional hints for the backend/provider
+        max_tokens: 300,
+        temperature: 0.8,
       })
 
-      if (!response.ok) {
-        const errData = await response.json()
-        console.error('OpenRouter API error:', errData)
-        throw new Error(errData?.error?.message || 'API request failed')
-      }
-
-      const data = await response.json()
+      const data = response.data || {}
       const replyText =
-        data.choices?.[0]?.message?.content ||
+        data.reply || data.data?.reply || data.message || data.choices?.[0]?.message?.content ||
         "I'm here for you. Could you tell me a bit more about how you're feeling?"
 
       setMessages((prev) => [
