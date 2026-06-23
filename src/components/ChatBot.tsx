@@ -110,8 +110,8 @@ export default function ChatBot({
 
       const data = response.data || {}
       const replyText =
-        data.reply || data.data?.reply || data.message || data.choices?.[0]?.message?.content ||
-        "I'm here for you. Could you tell me a bit more about how you're feeling?"
+  data.reply ||
+  "I'm here for you. Could you tell me a bit more about how you're feeling?";
 
       setMessages((prev) => [
         ...prev,

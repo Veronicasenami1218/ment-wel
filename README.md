@@ -87,8 +87,10 @@ VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
 # AI Chat (backend)
 # The frontend does not store provider API keys. Configure the backend with
-# `GROY_API_KEY` in the backend `.env` and the frontend will call the backend
-# AI endpoint at `<VITE_API_URL>/ai/chat`.
+# `GROY_API_KEY` in the backend `.env`. The frontend should call the backend
+# AI endpoint via POST `<VITE_API_URL>/ai/chat` (i.e. POST /api/v1/ai/chat). The
+# frontend sends a JSON body with a `messages` array and optional hints like
+# `max_tokens` and `temperature`.
 
 # App
 VITE_APP_NAME=MentWel
