@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import toast from 'react-hot-toast'
-import { format, subDays, parseISO, isSameDay } from 'date-fns'
+import { format, subDays, parseISO, isSameDay, startOfDay } from 'date-fns'
 import { CalendarDays, BarChart2, Save, Loader2 } from 'lucide-react'
 import moodService, { MoodEntry } from '../../services/mood.service'
 import { readMoods, saveMoodEntry } from '../../hooks/useUserStats'
@@ -28,8 +28,15 @@ export default function MoodTrackingPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [logs, setLogs] = useState<MoodEntry[]>([])
   const [loadingLogs, setLoadingLogs] = useState(false)
+  const isNewUser = logs.length === 0
 
-  // Fetch logs when switching to chart or calendar
+  // Fetch logs on mount and when switching to chart or calendar. This ensures
+  // new-user logic is accurate even if the user lands directly on the log tab.
+  useEffect(() => {
+    fetchLogs()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     if (activeTab !== 'log') fetchLogs()
   }, [activeTab])
@@ -69,6 +76,20 @@ export default function MoodTrackingPage() {
       toast.error('Please select a mood first')
       return
     }
+
+    const today = startOfDay(new Date())
+    const selectedDay = startOfDay(selectedDate)
+
+    if (selectedDay > today) {
+      toast.error('Mood entries cannot be logged for future dates.')
+      return
+    }
+
+    if (isNewUser && selectedDay < today) {
+      toast.error('New users can only log mood for today.')
+      return
+    }
+
     setIsSaving(true)
     const dateStr = format(selectedDate, 'yyyy-MM-dd')
     // Always persist locally first so the dashboard streak updates immediately
@@ -173,9 +194,10 @@ export default function MoodTrackingPage() {
               <DatePicker
                 selected={selectedDate}
                 onChange={(date) => date && setSelectedDate(date)}
+                minDate={isNewUser ? new Date() : undefined}
                 maxDate={new Date()}
                 dateFormat="MMMM d, yyyy"
-                className="w-full px-4 py-2.5 border-2 border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 rounded-lg focus:outline-none focus:border-sky-500 transition-all text-sm"
+                className="w-full px-4 py-2.5 border-2 border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-lg focus:outline-none focus:border-sky-500 transition-all text-sm"
               />
             </div>
 

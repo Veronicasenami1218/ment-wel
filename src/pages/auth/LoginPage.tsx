@@ -57,22 +57,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-16">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-16">
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Login Form */}
-          <div className="bg-white rounded-xl shadow-md border border-neutral-100 p-8 max-w-md mx-auto w-full">
+          <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-md border border-neutral-100 dark:border-neutral-700 p-8 max-w-md mx-auto w-full">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-neutral-900 mb-2">Welcome Back</h1>
-              <p className="text-neutral-600">Sign in to continue your mental wellness journey</p>
+              <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">Welcome Back</h1>
+              <p className="text-neutral-600 dark:text-neutral-300">Sign in to continue your mental wellness journey</p>
             </div>
-
             {/* Google OAuth Button */}
             <button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={isGoogleLoading}
-              className="w-full mb-6 py-3 px-4 border-2 border-neutral-200 rounded-lg font-medium text-neutral-700 bg-white hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full mb-6 py-3 px-4 border-2 border-neutral-200 dark:border-neutral-600 rounded-lg font-medium text-neutral-700 dark:text-neutral-100 bg-white dark:bg-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-600 hover:border-neutral-300 transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -85,30 +84,30 @@ export default function LoginPage() {
             
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-neutral-200"></div>
+                <div className="w-full border-t border-neutral-200 dark:border-neutral-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-neutral-500">Or continue with email</span>
+                <span className="px-4 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-300">Or continue with email</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                   Email Address
                 </label>
                 <input
                   type="email"
                   id="email"
                   {...register('email', { required: 'Email is required' })}
-                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
+                  className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
                   placeholder="Enter your email"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-500">⚠ {errors.email.message}</p>}
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -116,13 +115,13 @@ export default function LoginPage() {
                     type={showPassword ? 'text' : 'password'}
                     id="password"
                     {...register('password', { required: 'Password is required' })}
-                    className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
+                    className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
                     placeholder="Enter your password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 dark:text-neutral-300 hover:text-neutral-700 dark:hover:text-neutral-100 transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -137,7 +136,7 @@ export default function LoginPage() {
                     {...register('remember')}
                     className="w-4 h-4 text-sky-500 border-neutral-300 rounded focus:ring-sky-500"
                   />
-                  <span className="text-sm text-neutral-700">Remember me</span>
+                  <span className="text-sm text-neutral-700 dark:text-neutral-200">Remember me</span>
                 </label>
                 <Link to="/forgot-password" className="text-sm text-sky-500 hover:underline">
                   Forgot password?
@@ -167,7 +166,7 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <p className="text-center text-sm text-neutral-600 mt-8">
+            <p className="text-center text-sm text-neutral-600 dark:text-neutral-300 mt-8">
               Don't have an account?{' '}
               <Link to="/register" className="text-sky-500 font-medium hover:underline">
                 Sign up
