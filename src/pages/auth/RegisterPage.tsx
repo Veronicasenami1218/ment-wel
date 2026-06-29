@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const { signUp } = useSignUp();
   const { register: registerUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState({ score: 0, text: '' });
@@ -106,10 +107,10 @@ export default function RegisterPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Register Form */}
-          <div className="bg-white rounded-xl shadow-md border border-neutral-100 p-8 max-w-md mx-auto w-full">
+          <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-md border border-neutral-100 dark:border-neutral-700 p-8 max-w-md mx-auto w-full">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-neutral-900 mb-2">Create Your Account</h1>
-              <p className="text-neutral-600">Start your journey to mental wellness today</p>
+              <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">Create Your Account</h1>
+              <p className="text-neutral-600 dark:text-neutral-300">Start your journey to mental wellness today</p>
             </div>
 
             {/* Google OAuth Button */}
@@ -117,7 +118,7 @@ export default function RegisterPage() {
               type="button"
               onClick={handleGoogleSignUp}
               disabled={isGoogleLoading}
-              className="w-full mb-6 py-3 px-4 border-2 border-neutral-200 rounded-lg font-medium text-neutral-700 bg-white hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full mb-6 py-3 px-4 border-2 border-neutral-200 dark:border-neutral-600 rounded-lg font-medium text-neutral-700 dark:text-neutral-100 bg-white dark:bg-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-600 hover:border-neutral-300 transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -130,38 +131,38 @@ export default function RegisterPage() {
             
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-neutral-200"></div>
+                <div className="w-full border-t border-neutral-200 dark:border-neutral-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-neutral-500">Or continue with email</span>
+                <span className="px-4 bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-300">Or continue with email</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="firstName" className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label htmlFor="firstName" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                     First Name
                   </label>
                   <input
                     type="text"
                     id="firstName"
                     {...register('firstName', { required: 'First name is required' })}
-                    className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                    className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
                     placeholder="First name"
                   />
                   {errors.firstName && <p className="mt-1 text-xs text-red-500">⚠ {errors.firstName.message}</p>}
                 </div>
 
                 <div>
-                  <label htmlFor="lastName" className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label htmlFor="lastName" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                     Last Name
                   </label>
                   <input
                     type="text"
                     id="lastName"
                     {...register('lastName', { required: 'Last name is required' })}
-                    className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                    className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
                     placeholder="Last name"
                   />
                   {errors.lastName && <p className="mt-1 text-xs text-red-500">⚠ {errors.lastName.message}</p>}
@@ -169,7 +170,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                   Email Address
                 </label>
                 <input
@@ -182,14 +183,14 @@ export default function RegisterPage() {
                       message: 'Please enter a valid email address'
                     }
                   })}
-                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                  className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
                   placeholder="Enter your email"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-500">⚠ {errors.email.message}</p>}
               </div>
 
               <div>
-                <label htmlFor="phoneNumber" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label htmlFor="phoneNumber" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                   Phone Number
                 </label>
                 <input
@@ -201,33 +202,33 @@ export default function RegisterPage() {
                       /^\+234[789][01]\d{8}$/.test(v || '') ||
                       'Use Nigerian format: +234XXXXXXXXXX',
                   })}
-                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                  className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
                   placeholder="+2348012345678"
                 />
                 {errors.phoneNumber && <p className="mt-1 text-xs text-red-500">⚠ {errors.phoneNumber.message}</p>}
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="dateOfBirth" className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label htmlFor="dateOfBirth" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                     Date of Birth
                   </label>
                   <input
                     type="date"
                     id="dateOfBirth"
                     {...register('dateOfBirth', { required: 'Date of birth is required' })}
-                    className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                    className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
                   />
                   {errors.dateOfBirth && <p className="mt-1 text-xs text-red-500">⚠ {errors.dateOfBirth.message}</p>}
                 </div>
 
                 <div>
-                  <label htmlFor="gender" className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label htmlFor="gender" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                     Gender
                   </label>
                   <select
                     id="gender"
                     {...register('gender', { required: 'Please select your gender' })}
-                    className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                    className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
                   >
                     <option value="">Select</option>
                     <option value="male">Male</option>
@@ -240,7 +241,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -258,13 +259,13 @@ export default function RegisterPage() {
                       },
                     })}
                     onChange={onPasswordChange}
-                    className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
+                    className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all"
                     placeholder="Create a strong password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 dark:text-neutral-300 hover:text-neutral-700 dark:hover:text-neutral-100 transition-colors"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -293,16 +294,25 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200 mb-2">
                   Confirm Password
                 </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  {...register('confirmPassword', { required: 'Please confirm your password' })}
-                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
-                  placeholder="Confirm your password"
-                />
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    id="confirmPassword"
+                    {...register('confirmPassword', { required: 'Please confirm your password' })}
+                    className="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                    placeholder="Confirm your password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 dark:text-neutral-300 hover:text-neutral-700 dark:hover:text-neutral-100 transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
                 {errors.confirmPassword && <p className="mt-1 text-sm text-red-500">⚠ {errors.confirmPassword.message}</p>}
               </div>
 
@@ -313,7 +323,7 @@ export default function RegisterPage() {
                     {...register('terms', { required: 'You must accept the terms' })}
                     className="mt-1 w-4 h-4 text-sky-500 border-neutral-300 rounded focus:ring-sky-500"
                   />
-                  <span className="text-sm text-neutral-700">
+                  <span className="text-sm text-neutral-700 dark:text-neutral-200">
                     I agree to the{' '}
                     <Link to="/terms" target="_blank" className="text-sky-500 hover:underline">
                       Terms of Service
@@ -350,7 +360,7 @@ export default function RegisterPage() {
               </button>
             </form>
 
-            <p className="text-center text-sm text-neutral-600 mt-6">
+            <p className="text-center text-sm text-neutral-600 dark:text-neutral-300 mt-6">
               Already have an account?{' '}
               <Link to="/login" className="text-sky-500 font-medium hover:underline">
                 Sign in

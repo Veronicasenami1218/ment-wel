@@ -23,6 +23,7 @@ export default function Header({ isScrolled }: HeaderProps) {
 
   // Unified sign-out that clears both Clerk and our backend session.
   const handleSignOut = async () => {
+    setIsMobileMenuOpen(false)
     try {
       await credentialLogout()
     } catch {
@@ -249,7 +250,8 @@ export default function Header({ isScrolled }: HeaderProps) {
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-neutral-600 hover:text-primary-600 hover:bg-neutral-100 transition-colors"
+              className="p-2 rounded-md text-neutral-600 hover:text-primary-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800 transition-colors"
+              aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -268,7 +270,7 @@ export default function Header({ isScrolled }: HeaderProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-neutral-200 shadow-soft"
+            className="lg:hidden bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-700 shadow-soft"
           >
             <div className="container mx-auto px-4 py-4">
               <nav className="space-y-2">
@@ -280,8 +282,8 @@ export default function Header({ isScrolled }: HeaderProps) {
                     className={cn(
                       'block px-3 py-2 text-base font-medium rounded-md transition-colors',
                       isActive(item.href)
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-neutral-700 hover:text-primary-600 hover:bg-neutral-50'
+                        ? 'text-primary-600 bg-primary-50 dark:bg-neutral-800'
+                        : 'text-neutral-700 dark:text-neutral-200 hover:text-primary-600 hover:bg-neutral-50 dark:hover:bg-neutral-800'
                     )}
                   >
                     {item.name}
@@ -289,25 +291,60 @@ export default function Header({ isScrolled }: HeaderProps) {
                 ))}
               </nav>
 
-              <div className="mt-6 pt-6 border-t border-neutral-200">
-                {isSignedIn ? (
-                  <div className="flex justify-center">
-                    <UserButton 
-                      appearance={{
-                        elements: {
-                          avatarBox: 'w-10 h-10',
-                          userButtonPopoverCard: 'shadow-lg border border-neutral-200'
-                        }
-                      }}
-                      afterSignOutUrl="/"
-                    />
-                  </div>
+              <div className="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+                {isAuthenticated ? (
+                  <>
+                    {isSignedIn ? (
+                      <>
+                        <div className="flex justify-center mb-4">
+                          <UserButton 
+                            appearance={{
+                              elements: {
+                                avatarBox: 'w-10 h-10',
+                                userButtonPopoverCard: 'shadow-lg border border-neutral-200 dark:border-neutral-700'
+                              }
+                            }}
+                            afterSignOutUrl="/"
+                          />
+                        </div>
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-200 px-4 py-2 text-sm font-medium hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Logout
+                        </button>
+                      </>
+                    ) : (
+                      <div className="rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 p-4">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white text-lg font-semibold">
+                            {getUserInitials(credentialUser)}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-neutral-900 dark:text-neutral-100">{getUserDisplayName(credentialUser)}</p>
+                            <p className="text-sm text-neutral-500 dark:text-neutral-400">Signed in</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setIsMobileMenuOpen(false)
+                            handleSignOut()
+                          }}
+                          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-200 px-4 py-2 text-sm font-medium hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <div className="space-y-3">
                     <SignInButton mode="modal">
                       <button 
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="block w-full text-center px-4 py-2 text-base font-medium text-neutral-700 hover:text-primary-600 transition-colors"
+                        className="block w-full text-center px-4 py-2 text-base font-medium text-neutral-700 dark:text-neutral-200 hover:text-primary-600 transition-colors"
                       >
                         Sign In
                       </button>
