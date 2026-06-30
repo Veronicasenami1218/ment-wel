@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Shield, CheckCircle, Clock } from 'lucide-react';
 import { useSignIn } from '@clerk/clerk-react';
-import authService from '../../services/auth.service';
+import { useAuth } from '../../hooks/useAuth';
 
 interface LoginFormData {
   email: string;
@@ -16,6 +16,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { signIn } = useSignIn();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -43,8 +44,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      console.log('Attempting login with:', { email: data.email });
-      await authService.login({ email: data.email, password: data.password });
+      await login(data.email, data.password);
       toast.success('Welcome back!');
       navigate(from, { replace: true });
     } catch (error: any) {
