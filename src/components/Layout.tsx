@@ -18,14 +18,16 @@ export default function Layout() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800 transition-colors duration-200">
-      <Header isScrolled={isScrolled} />
-      
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      
-      <Footer />
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-800 transition-colors duration-200">
+      <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col">
+        <Header isScrolled={isScrolled} />
+
+        <main className="flex-1 w-full overflow-x-hidden">
+          <Outlet />
+        </main>
+
+        <Footer />
+      </div>
     </div>
   )
 }
